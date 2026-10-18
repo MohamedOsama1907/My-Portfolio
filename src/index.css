@@ -1,0 +1,24 @@
+@import "tailwindcss";
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Bebas Neue", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+body {
+  font-family: "Manrope Variable", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+  min-width: 320px;
+  min-height: 100vh;
+  background: #fafafa;
+  color: #111111;
+}
+@theme {
+  --font-geist-mono: "Geist Mono Variable", monospace;
+}
