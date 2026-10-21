@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import Carousel, { type Project } from "../Carousel/Carousel";
 import ProjectOverView from "../ProjectOverView/ProjectOverView";
+import ProjectModal from "../ProjectModal/ProjectModal";
+import type { ProjectItem } from "../../data/projectsData";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -8,6 +10,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function FeaturedProjectsSection() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [modalProject, setModalProject] = useState<ProjectItem | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const headingWordsRef = useRef<HTMLHeadingElement>(null);
   const carouselWrapRef = useRef<HTMLDivElement>(null);
@@ -84,9 +87,22 @@ export default function FeaturedProjectsSection() {
         </span>
       </h2>
       <div ref={carouselWrapRef} className="mt-10 sm:mt-14">
-        <Carousel onProjectChange={setSelectedProject} />
+        <Carousel
+          onProjectChange={setSelectedProject}
+          onViewDetails={(proj) => setModalProject(proj as unknown as ProjectItem)}
+        />
       </div>
-      {selectedProject ? <ProjectOverView project={selectedProject} /> : null}
+      {selectedProject ? (
+        <ProjectOverView
+          project={selectedProject}
+          onViewDetails={(proj) => setModalProject(proj as unknown as ProjectItem)}
+        />
+      ) : null}
+
+      <ProjectModal
+        project={modalProject}
+        onClose={() => setModalProject(null)}
+      />
     </section>
   );
 }

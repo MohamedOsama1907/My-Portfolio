@@ -21,108 +21,14 @@ import cineVerse from "../../assets/10-CineVerse.png";
 import socialApp from "../../assets/11-SocialApp.svg";
 import audioGuard from "../../assets/12-AudioGuard.svg";
 
-export type Project = {
-  name: string;
-  image: string;
-  details?: string; // URL/route of the project's details page
-  demo?: string; // live demo URL
-  github?: string; // repository URL
-  description?: string;
-  technologies?: string[];
+import { PROJECTS_DATA, type ProjectItem } from "../../data/projectsData";
+
+export type Project = ProjectItem & {
+  details?: string;
 };
 
-// Add links per project, e.g.
-const projectLinks: Project[] = [
-  {
-    name: "Mavic Pro",
-    image: mavic,
-    details: "/projects/mavic-pro",
-    demo: "https://mohamedosama1907.github.io/Assignment-3/",
-    github: "https://github.com/MohamedOsama1907/Assignment-3",
-  },
-  {
-    name: "UX Review",
-    image: uxReview,
-    details: "/projects/ux-review",
-    demo: "https://mohamedosama1907.github.io/Assignment-3/",
-    github: "https://github.com/MohamedOsama1907/Assignment-3",
-  },
-  {
-    name: "mudaber",
-    image: mudaber,
-    details: "/projects/mudaber",
-    demo: "https://mohamedosama1907.github.io/Assginment-5/",
-    github: "https://github.com/MohamedOsama1907/Assginment-5",
-  },
-  {
-    name: "clarity",
-    image: clarity,
-    details: "/projects/clarity",
-    demo: "https://mohamedosama1907.github.io/Route-Exam/",
-    github: "https://github.com/MohamedOsama1907/Route-Exam",
-  },
-  {
-    name: "game Arena",
-    image: gameArena,
-    details: "/projects/gameArena",
-    demo: "https://mohamedosama1907.github.io/Assignment-6/",
-    github: "https://github.com/MohamedOsama1907/Assignment-6",
-  },
-  {
-    name: "contactHub",
-    image: contactHub,
-    details: "/projects/contactHub",
-    demo: "https://mohamedosama1907.github.io/Assignment-9/",
-    github: "https://github.com/MohamedOsama1907/Assignment-9",
-  },
-
-  {
-    name: "portfolio",
-    image: portfolio,
-    details: "/projects/portfolio",
-    demo: "https://mohamedosama1907.github.io/Assignment-10/",
-    github: "https://github.com/MohamedOsama1907/Assignment-10",
-  },
-  {
-    name: "COSMOS",
-    image: cosmos,
-    details: "/projects/cosmos",
-    demo: "https://mohamedosama1907.github.io/Assignment-11/",
-    github: "https://github.com/MohamedOsama1907/Assignment-11",
-  },
-  {
-    name: "quizApp",
-    image: quizApp,
-    details: "/projects/quizApp",
-    demo: "https://mohamedosama1907.github.io/Assignment-12/",
-    github: "https://github.com/MohamedOsama1907/Assignment-12",
-  },
-
-  {
-    name: "cineVerse",
-    image: cineVerse,
-    details: "/projects/cineVerse",
-    demo: "https://shaheed-app.vercel.app/",
-    github: "https://github.com/MohamedOsama1907/Movie-App",
-  },
-  {
-    name: "socialApp",
-    image: socialApp,
-    details: "/projects/socialApp",
-    demo: "https://social-media-space.vercel.app/",
-    github: "https://github.com/MohamedOsama1907/Social-App",
-  },
-  {
-    name: "audioGuard",
-    image: audioGuard,
-    details: "/projects/audioGuard",
-    demo: "https://voiceguardal.vercel.app/",
-    github: "https://github.com/MohamedOsama1907/VoiceGuard-AI",
-  },
-];
-
 // Any link left out renders as a dimmed, non-clickable action.
-const projectImages: Project[] = [
+const projectImages = [
   { name: "Mavic Pro", image: mavic },
   { name: "UX Review", image: uxReview },
   { name: "Mudaber", image: mudaber },
@@ -137,114 +43,29 @@ const projectImages: Project[] = [
   { name: "AudioGuard", image: audioGuard },
 ];
 
-const projects: Project[] = projectImages
-  .map((projectImage) => {
-    const links = projectLinks.find(
-      ({ image }) => image === projectImage.image,
-    );
-    return links
-      ? { ...projectImage, ...links, name: projectImage.name }
-      : projectImage;
-  })
-  .map((project) => {
-    const presentation: Record<
-      string,
-      Pick<Project, "description" | "technologies">
-    > = {
-      "Mavic Pro": {
-        description: "A responsive product showcase for the DJI Mavic Pro.",
-        technologies: ["HTML", "CSS"],
-      },
-      "UX Review": {
-        description: "A bold editorial landing page for design and culture.",
-        technologies: ["HTML", "CSS"],
-      },
-      Mudaber: {
-        description: "A responsive Arabic learning platform experience.",
-        technologies: ["HTML", "CSS", "Bootstrap", "JavaScript"],
-      },
-      Clarity: {
-        description:
-          "A clean, responsive interface built around clear information and usability.",
-        technologies: ["HTML", "CSS", "JavaScript"],
-      },
-      "Game Arena": {
-        description:
-          "A game discovery experience for browsing and exploring games.",
-        technologies: ["HTML", "CSS", "Bootstrap", "JavaScript"],
-      },
-      ContactHub: {
-        description:
-          "A smart contact manager for organizing people, favorites, and emergency contacts.",
-        technologies: ["HTML", "CSS", "Bootstrap", "JavaScript"],
-      },
-      Portfolio: {
-        description:
-          "A personal portfolio showcasing selected frontend projects.",
-        technologies: [
-          "React.js",
-          "TypeScript",
-          "Vite",
-          "Tailwind CSS",
-          "Lucide",
-          "React Router",
-        ],
-      },
-      COSMOS: {
-        description:
-          "A space exploration dashboard featuring astronomy content and NASA imagery.",
-        technologies: ["HTML", "CSS", "Bootstrap", "JavaScript"],
-      },
-      "Quiz App": {
-        description:
-          "An interactive quiz game with categories, difficulty settings, and timed questions.",
-        technologies: ["HTML", "CSS", "Bootstrap", "JavaScript", "OOP", "API"],
-      },
-      CineVerse: {
-        description:
-          "A movie discovery app for browsing trending films and details.",
-        technologies: [
-          "React.js",
-          "TypeScript",
-          "Vite",
-          "Tailwind CSS",
-          "Lucide",
-          "React Router",
-        ],
-      },
-      "Social App": {
-        description:
-          "A social platform for sharing posts, connecting with people, and viewing profiles.",
-        technologies: [
-          "React.js",
-          "TypeScript",
-          "Vite",
-          "Tailwind CSS",
-          "TanStack Query",
-          "Axios",
-          "Sonner",
-          "Lucide",
-          "React Router",
-        ],
-      },
-      AudioGuard: {
-        description:
-          "An AI voice detection interface for analyzing uploaded or recorded audio.",
-        technologies: [
-          "React.js",
-          "TypeScript",
-          "Vite",
-          "Tailwind CSS",
-          "TanStack Query",
-          "Axios",
-          "Sonner",
-          "Lucide",
-          "React Router",
-        ],
-      },
+const projects: Project[] = projectImages.map((item) => {
+  const match = PROJECTS_DATA.find(
+    (p) => p.name.toLowerCase() === item.name.toLowerCase(),
+  );
+  if (match) {
+    return {
+      ...match,
+      details: `/projects/${match.id}`,
     };
-    return { ...project, ...presentation[project.name] };
-  });
+  }
+  return {
+    id: item.name.toLowerCase().replace(/\s+/g, "-"),
+    name: item.name,
+    category: "Web Applications",
+    badge: "Project",
+    image: item.image,
+    description: "",
+    longDescription: "",
+    technologies: [],
+    highlights: [],
+    details: `/projects/${item.name.toLowerCase().replace(/\s+/g, "-")}`,
+  };
+});
 
 const TWEEN_FACTOR_BASE = 1; // adjacent snap => fully "side" state
 const MIN_SCALE = 0.78;
@@ -282,8 +103,6 @@ const HOVER_DELAY = [
   "group-hover/media:delay-[160ms] group-focus-within/media:delay-[160ms]",
 ];
 const TOUCH_DELAY = ["delay-[120ms]", "delay-[60ms]", "delay-[180ms]"];
-
-const DISMISSED_OVERLAY_KEY = "portfolio_dismissed_project_overlay";
 
 function GithubMark({ className }: { className?: string }) {
   // Inline mark: newer lucide-react releases dropped brand icons.
@@ -423,25 +242,26 @@ function ProjectOverlay({
   project,
   isActive,
   canHover,
-  dismissed = false,
+  isTouchRevealed = false,
   onDismiss,
   onViewDetails,
 }: {
   project: Project;
   isActive: boolean;
   canHover: boolean;
-  dismissed?: boolean;
+  isTouchRevealed?: boolean;
   onDismiss?: () => void;
   onViewDetails?: (project: Project) => void;
 }) {
   // Only the focused (center) card is interactive; side cards stay inert.
-  // When dismissed, the overlay is hidden and inactive until intentionally triggered again.
-  const revealed = isActive && !canHover && !dismissed; // touch: persistent action bar
-  const hoverable = isActive && canHover && !dismissed;
-  const tabIndex = isActive && !dismissed ? undefined : -1;
+  // On desktop: revealed on hover via group-hover/media classes.
+  // On touch: revealed only when user taps the active card.
+  const revealed = isActive && !canHover && isTouchRevealed;
+  const hoverable = isActive && canHover;
+  const tabIndex = isActive && (canHover || isTouchRevealed) ? undefined : -1;
 
   const container = revealed
-    ? "opacity-100 items-end pb-3 bg-gradient-to-t from-black/80 via-black/20 to-transparent"
+    ? "opacity-100 pointer-events-auto items-center bg-gradient-to-t from-black/85 via-black/55 to-black/40"
     : `opacity-0 pointer-events-none items-center bg-gradient-to-t from-black/80 via-black/45 to-black/30 ${
         hoverable ? `${HOVER_REVEAL} ${HOVER_POINTER}` : ""
       }`;
@@ -457,7 +277,7 @@ function ProjectOverlay({
 
   return (
     <div
-      aria-hidden={isActive && !dismissed ? undefined : true}
+      aria-hidden={isActive && (canHover || isTouchRevealed) ? undefined : true}
       className={`absolute inset-0 flex justify-center gap-2 ring-1 ring-inset ring-white/10 transition-opacity duration-500 ${EASE} motion-reduce:transition-none sm:gap-3 ${container}`}>
       <div className={`${itemBase} ${item(0)}`}>
         <OverlayAction
@@ -524,15 +344,8 @@ export default function Carousel({
   onProjectChange?: (project: Project) => void;
 }) {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [dismissedProjects, setDismissedProjects] = useState<Record<string, boolean>>(() => {
-    if (typeof window === "undefined") return {};
-    try {
-      const saved = window.sessionStorage.getItem(DISMISSED_OVERLAY_KEY);
-      return saved ? { [saved]: true } : {};
-    } catch {
-      return {};
-    }
-  });
+  const [touchRevealed, setTouchRevealed] = useState<string | null>(null);
+  const pointerStartRef = useRef<{ x: number; y: number } | null>(null);
   const canHover = useCanHover();
   const tweenNodes = useRef<(TweenItem | null)[]>([]);
   const [viewportRef, emblaApi] = useEmblaCarousel({
@@ -543,66 +356,59 @@ export default function Carousel({
     duration: 32, // slightly longer, softer glide (default 25)
   });
 
-  const handleDismiss = useCallback((projectName: string) => {
-    try {
-      window.sessionStorage.setItem(DISMISSED_OVERLAY_KEY, projectName);
-    } catch {
-      // In-memory state still works if storage is unavailable.
-    }
-    setDismissedProjects((previous) => ({
-      ...previous,
-      [projectName]: true,
-    }));
-  }, []);
-
-  const handleCardMouseLeave = useCallback((projectName: string) => {
-    if (!dismissedProjects[projectName]) return;
-    try {
-      if (
-        window.sessionStorage.getItem(DISMISSED_OVERLAY_KEY) === projectName
-      ) {
-        window.sessionStorage.removeItem(DISMISSED_OVERLAY_KEY);
-      }
-    } catch {
-      // In-memory state still works if storage is unavailable.
-    }
-    setDismissedProjects((previous) => {
-      const next = { ...previous };
-      delete next[projectName];
-      return next;
-    });
-  }, [dismissedProjects]);
+  const handlePointerDown = (e: React.PointerEvent) => {
+    pointerStartRef.current = { x: e.clientX, y: e.clientY };
+  };
 
   const handleCardClick = useCallback(
-    (projectName: string) => {
-      if (canHover || !dismissedProjects[projectName]) return;
-      try {
-        if (
-          window.sessionStorage.getItem(DISMISSED_OVERLAY_KEY) === projectName
-        ) {
-          window.sessionStorage.removeItem(DISMISSED_OVERLAY_KEY);
+    (
+      projectName: string,
+      isActive: boolean,
+      index: number,
+      e: React.MouseEvent,
+    ) => {
+      // If user dragged/swiped the carousel, don't trigger tap action
+      if (pointerStartRef.current) {
+        const dx = e.clientX - pointerStartRef.current.x;
+        const dy = e.clientY - pointerStartRef.current.y;
+        if (Math.hypot(dx, dy) > 8) {
+          return;
         }
-      } catch {
-        // In-memory state still works if storage is unavailable.
       }
-      setDismissedProjects((previous) => {
-        const next = { ...previous };
-        delete next[projectName];
-        return next;
-      });
+
+      if (!isActive) {
+        emblaApi?.scrollTo(index, prefersReducedMotion());
+        setTouchRevealed(null);
+        return;
+      }
+
+      if (canHover) return;
+
+      // On mobile / touch, tap toggles the action overlay on the active card
+      setTouchRevealed((current) =>
+        current === projectName ? null : projectName,
+      );
     },
-    [canHover, dismissedProjects],
+    [canHover, emblaApi],
   );
 
   const updateSelectedIndex = useCallback((api: EmblaCarouselType) => {
     setSelectedIndex(api.selectedScrollSnap());
-    try {
-      window.sessionStorage.removeItem(DISMISSED_OVERLAY_KEY);
-    } catch {
-      // Ignore
-    }
-    setDismissedProjects({});
+    setTouchRevealed(null);
   }, []);
+
+  // Close overlay on touch when tapping outside the carousel cards
+  useEffect(() => {
+    if (canHover || !touchRevealed) return;
+    const handleOutside = (e: PointerEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (!target?.closest("[data-carousel-card]")) {
+        setTouchRevealed(null);
+      }
+    };
+    document.addEventListener("pointerdown", handleOutside);
+    return () => document.removeEventListener("pointerdown", handleOutside);
+  }, [canHover, touchRevealed]);
 
   useEffect(() => {
     onProjectChange?.(projects[selectedIndex]);
@@ -731,13 +537,15 @@ export default function Carousel({
                 className="group relative mx-auto w-full origin-center will-change-transform [--overlap:51.43%] sm:[--overlap:27.59%]">
                 {/* CHANGED: wrapper owns radius + shadow so the overlay is clipped to the rounded corners */}
                 <div
-                  onMouseLeave={() => handleCardMouseLeave(project.name)}
-                  onClick={() => handleCardClick(project.name)}
-                  onBlur={(e) => {
-                    if (!e.currentTarget.contains(e.relatedTarget as Node)) {
-                      handleCardMouseLeave(project.name);
-                    }
-                  }}
+                  onPointerDown={handlePointerDown}
+                  onClick={(e) =>
+                    handleCardClick(
+                      project.name,
+                      selectedIndex === index,
+                      index,
+                      e,
+                    )
+                  }
                   className="group/media relative overflow-hidden rounded-2xl border border-[#cacaca] dark:border-neutral-800 shadow-[0_16px_36px_rgba(17,17,17,0.12)] dark:shadow-[0_16px_36px_rgba(0,0,0,0.4)] transition-shadow duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:shadow-[0_22px_48px_rgba(17,17,17,0.18)] dark:group-hover:shadow-[0_22px_48px_rgba(0,0,0,0.6)] sm:rounded-[20px]">
                   <img
                     src={project.image}
@@ -747,7 +555,7 @@ export default function Carousel({
                     loading="lazy"
                     decoding="async"
                     draggable={false}
-                    className="block aspect-video w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+                    className="block aspect-[16/11] sm:aspect-video w-full object-cover object-top sm:object-center transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
                   />
                   <div
                     data-carousel-dim
@@ -758,8 +566,8 @@ export default function Carousel({
                     project={project}
                     isActive={selectedIndex === index}
                     canHover={canHover}
-                    dismissed={dismissedProjects[project.name] ?? false}
-                    onDismiss={() => handleDismiss(project.name)}
+                    isTouchRevealed={touchRevealed === project.name}
+                    onDismiss={() => setTouchRevealed(null)}
                     onViewDetails={onViewDetails}
                   />
                 </div>

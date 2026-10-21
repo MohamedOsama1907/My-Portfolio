@@ -214,14 +214,14 @@ export default function AboutSection() {
               </div>
               <p className="mt-3 text-[14px] leading-relaxed text-neutral-600 dark:text-neutral-400 sm:text-[15px]">
                 Through personal projects like{" "}
-                <span className="font-semibold text-[#111111] dark:text-[#F5F5F5]">ReshCart</span>,
+                <span className="font-semibold text-[#111111] dark:text-[#F5F5F5]">FreshCart</span>,
                 a feature-rich e-commerce platform, and a social app with a
                 variety of features, I&apos;ve worked on building frontend
                 experiences and integrating them with APIs and backend services.
               </p>
               <div className="mt-4 flex flex-wrap gap-2">
                 <span className="about-chip rounded-full border border-neutral-200 dark:border-neutral-700/60 bg-white dark:bg-[#222222] px-3 py-1 font-[Bebas_Neue] text-[12px] uppercase tracking-wide text-neutral-600 dark:text-neutral-300 sm:text-[13px]">
-                  ReshCart E-Commerce
+                  FreshCart E-Commerce
                 </span>
                 <span className="about-chip rounded-full border border-neutral-200 dark:border-neutral-700/60 bg-white dark:bg-[#222222] px-3 py-1 font-[Bebas_Neue] text-[12px] uppercase tracking-wide text-neutral-600 dark:text-neutral-300 sm:text-[13px]">
                   Social Platform

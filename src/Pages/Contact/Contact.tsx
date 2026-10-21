@@ -6,7 +6,12 @@ import {
 } from "react-icons/fa";
 import { Mail, Phone, Send } from "lucide-react";
 import { FaTelegram, FaWhatsapp } from "react-icons/fa";
-
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import type { SubmitHandler } from "react-hook-form";
+import z from "zod";
+import { toast } from "sonner";
+import emailjs from "@emailjs/browser";
 const contactCards = [
   {
     label: "Email",
@@ -60,8 +65,49 @@ const socialLinks = [
     Icon: FaLinkedinIn,
   },
 ];
-
 export default function Contact() {
+  const signupSchema = z.object({
+    name: z.string().min(1, { error: "Please enter your name." }),
+    email: z
+      .email({ error: "Please enter a valid email." })
+      .min(1, { error: " Please enter your email." }),
+    subject: z.string().min(1, { error: "Please enter a subject." }),
+    message: z.string().min(1, { error: "Tell me a bit about your project." }),
+  });
+  type ContactFormData = z.infer<typeof signupSchema>;
+
+  const { register, handleSubmit, formState } = useForm<ContactFormData>({
+    defaultValues: {
+      name: "",
+      email: "",
+      subject: "",
+      message: "",
+    },
+    resolver: zodResolver(signupSchema),
+  });
+
+  const servicesid = "service_qa7pvae";
+  const templaetid = "template_60xrrbl";
+  const publicKey = "oU-qrTB5YIUzEVMPT";
+  const validateFunction: SubmitHandler<ContactFormData> = async (formData) => {
+    try {
+      const templateParams = {
+        sender_name: formData.name,
+        email_address: formData.email,
+        subject: formData.subject,
+        message: formData.message,
+      };
+
+      await emailjs.send(servicesid, templaetid, templateParams, {
+        publicKey,
+      });
+      toast.success(
+        "Your message was sent successfully. I'll get back to you soon.",
+      );
+    } catch {
+      toast.error("Your message could not be sent. Please try again.");
+    }
+  };
   return (
     <section
       aria-labelledby="contact-title"
@@ -69,7 +115,7 @@ export default function Contact() {
       {/* Section heading */}
       <h2
         id="contact-title"
-        className="font-[Bebas_Neue] text-[29px] uppercase leading-none text-[#111111] dark:text-[#F5F5F5] sm:text-[36px]">
+        className="font-[Bebas_Neue] text-[29px] uppercase leading-none text-[#111111] dark:text-[#F5F5F5] sm:text-[48px]">
         Get in touch
       </h2>
       <p className="mt-4 max-w-2xl text-sm leading-6 text-neutral-500 dark:text-neutral-400 sm:mt-5 sm:text-base sm:leading-7">
@@ -105,7 +151,9 @@ export default function Contact() {
                 )}
               </span>
               <div className="min-w-0">
-                <p className="text-sm font-semibold text-[#111111] dark:text-[#F5F5F5]">{label}</p>
+                <p className="text-sm font-semibold text-[#111111] dark:text-[#F5F5F5]">
+                  {label}
+                </p>
                 <p className="mt-0.5 truncate text-xs text-neutral-500 dark:text-neutral-400">
                   {value}
                 </p>
@@ -141,7 +189,9 @@ export default function Contact() {
 
         {/* Right column — contact form */}
         <div className="rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#141414] p-5 shadow-[0_2px_12px_rgba(17,17,17,0.04)] dark:shadow-[0_2px_12px_rgba(0,0,0,0.3)] sm:p-8">
-          <form className="flex flex-col gap-5">
+          <form
+            className="flex flex-col gap-5"
+            onSubmit={handleSubmit(validateFunction)}>
             <div>
               <label
                 htmlFor="contact-name"
@@ -152,8 +202,16 @@ export default function Contact() {
                 id="contact-name"
                 type="text"
                 placeholder="Enter your name"
+                {...register("name")}
                 className="w-full rounded-xl border border-neutral-200 dark:border-neutral-800 bg-[#fafafa] dark:bg-[#1c1c1c] px-4 py-3 text-sm text-[#111111] dark:text-[#F5F5F5] placeholder:text-neutral-400 dark:placeholder:text-neutral-500 transition-colors duration-200 focus:border-neutral-400 dark:focus:border-neutral-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#111111]/20 dark:focus-visible:ring-white/20 motion-reduce:transition-none"
               />
+              {formState.errors.name ? (
+                <p className=" text-[13px] text-[#dc2626] bg-transparent mt-1">
+                  *{formState.errors.name.message}
+                </p>
+              ) : (
+                ""
+              )}
             </div>
 
             <div>
@@ -166,8 +224,16 @@ export default function Contact() {
                 id="contact-email"
                 type="email"
                 placeholder="you@example.com"
+                {...register("email")}
                 className="w-full rounded-xl border border-neutral-200 dark:border-neutral-800 bg-[#fafafa] dark:bg-[#1c1c1c] px-4 py-3 text-sm text-[#111111] dark:text-[#F5F5F5] placeholder:text-neutral-400 dark:placeholder:text-neutral-500 transition-colors duration-200 focus:border-neutral-400 dark:focus:border-neutral-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#111111]/20 dark:focus-visible:ring-white/20 motion-reduce:transition-none"
               />
+              {formState.errors.email ? (
+                <p className=" text-[13px] text-[#dc2626] bg-transparent mt-1">
+                  *{formState.errors.email.message}
+                </p>
+              ) : (
+                ""
+              )}
             </div>
 
             <div>
@@ -180,8 +246,16 @@ export default function Contact() {
                 id="contact-subject"
                 type="text"
                 placeholder="Project inquiry"
+                {...register("subject")}
                 className="w-full rounded-xl border border-neutral-200 dark:border-neutral-800 bg-[#fafafa] dark:bg-[#1c1c1c] px-4 py-3 text-sm text-[#111111] dark:text-[#F5F5F5] placeholder:text-neutral-400 dark:placeholder:text-neutral-500 transition-colors duration-200 focus:border-neutral-400 dark:focus:border-neutral-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#111111]/20 dark:focus-visible:ring-white/20 motion-reduce:transition-none"
               />
+              {formState.errors.subject ? (
+                <p className=" text-[13px] text-[#dc2626] bg-transparent mt-1">
+                  *{formState.errors.subject.message}
+                </p>
+              ) : (
+                ""
+              )}
             </div>
 
             <div>
@@ -193,15 +267,23 @@ export default function Contact() {
               <textarea
                 id="contact-message"
                 placeholder="Tell me about your project..."
+                {...register("message")}
                 rows={5}
                 className="w-full resize-y rounded-xl border border-neutral-200 dark:border-neutral-800 bg-[#fafafa] dark:bg-[#1c1c1c] px-4 py-3 text-sm text-[#111111] dark:text-[#F5F5F5] placeholder:text-neutral-400 dark:placeholder:text-neutral-500 transition-colors duration-200 focus:border-neutral-400 dark:focus:border-neutral-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#111111]/20 dark:focus-visible:ring-white/20 motion-reduce:transition-none"
               />
+              {formState.errors.message ? (
+                <p className=" text-[13px] text-[#dc2626] bg-transparent mt-1">
+                  *{formState.errors.message.message}
+                </p>
+              ) : (
+                ""
+              )}
             </div>
 
             <button
               type="submit"
-              className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[#111111] dark:bg-white py-3.5 text-[15px] font-semibold text-white dark:text-[#111111] transition-[background-color,box-shadow] duration-200 hover:bg-neutral-800 dark:hover:bg-neutral-200 hover:shadow-[0_4px_14px_rgba(17,17,17,0.16)] dark:hover:shadow-[0_4px_14px_rgba(255,255,255,0.12)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111111] dark:focus-visible:outline-white motion-reduce:transition-none">
-              Send message
+              className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-[#111111] dark:bg-white py-3.5 text-[15px] font-semibold text-white dark:text-[#111111] transition-[background-color,box-shadow] duration-200 hover:bg-neutral-800 dark:hover:bg-neutral-200 hover:shadow-[0_4px_14px_rgba(17,17,17,0.16)] dark:hover:shadow-[0_4px_14px_rgba(255,255,255,0.12)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111111] dark:focus-visible:outline-white motion-reduce:transition-none">
+              {formState.isSubmitting ? "Sending..." : "Send message"}
               <Send aria-hidden="true" className="size-4" />
             </button>
           </form>

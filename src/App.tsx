@@ -5,6 +5,7 @@ import NotFound from "./Components/NotFound/NotFound";
 import Contact from "./Pages/Contact/Contact";
 import Projects from "./Pages/Projects/Projects";
 import { ThemeProvider } from "./context/ThemeContext";
+import { Toaster } from "sonner";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,7 @@ function App() {
   return (
     <ThemeProvider>
       <RouterProvider router={router} />
+      <Toaster richColors position="top-right" />
     </ThemeProvider>
   );
 }

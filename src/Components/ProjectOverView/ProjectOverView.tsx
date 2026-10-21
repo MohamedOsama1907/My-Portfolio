@@ -4,9 +4,13 @@ import type { Project } from "../Carousel/Carousel";
 
 type ProjectOverViewProps = {
   project: Project;
+  onViewDetails?: (project: Project) => void;
 };
 
-export default function ProjectOverView({ project }: ProjectOverViewProps) {
+export default function ProjectOverView({
+  project,
+  onViewDetails,
+}: ProjectOverViewProps) {
   return (
     <div className="mt-8 sm:mt-9">
       <article
@@ -46,7 +50,15 @@ export default function ProjectOverView({ project }: ProjectOverViewProps) {
             </ul>
           ) : null}
 
-          {project.details ? (
+          {onViewDetails ? (
+            <button
+              type="button"
+              onClick={() => onViewDetails(project)}
+              className="mt-5 inline-flex min-h-10 items-center gap-2 font-[Bebas_Neue] text-base tracking-wide text-[#111111] dark:text-[#F5F5F5] transition-colors hover:text-neutral-500 dark:hover:text-neutral-300 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#111111] dark:focus-visible:outline-white sm:mt-6 sm:text-lg cursor-pointer">
+              View details
+              <ArrowRight aria-hidden="true" className="size-4" />
+            </button>
+          ) : project.details ? (
             <Link
               to={project.details}
               className="mt-5 inline-flex min-h-10 items-center gap-2 font-[Bebas_Neue] text-base tracking-wide text-[#111111] dark:text-[#F5F5F5] transition-colors hover:text-neutral-500 dark:hover:text-neutral-300 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#111111] dark:focus-visible:outline-white sm:mt-6 sm:text-lg">

@@ -5,6 +5,7 @@ import {
   type PointerEvent,
   type ReactNode,
 } from "react";
+import gsap from "gsap";
 import { Download, Folder, Globe2, Mail, Moon, Sun } from "lucide-react";
 import { NavLink } from "react-router";
 import logoDark from "../../../public/mohamedDark.png";
@@ -160,8 +161,98 @@ function TooltipLabel({ children }: { children: ReactNode }) {
 export default function Navbar() {
   const { isDark, toggleTheme } = useTheme();
   const [language, setLanguage] = useState<"EN" | "AR">("EN");
+  const desktopNavRef = useRef<HTMLElement>(null);
   const { dockRef, onPointerEnter, onPointerMove, onPointerLeave } =
     useDockMagnification();
+
+  // GSAP circle-unfolding entrance animation on page refresh
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    if (prefersReducedMotion) return;
+
+    const navs = [desktopNavRef.current, dockRef.current].filter(
+      (el): el is HTMLElement => Boolean(el),
+    );
+    if (!navs.length) return;
+
+    const ctx = gsap.context(() => {
+      navs.forEach((nav) => {
+        const innerItems = Array.from(nav.children).filter(
+          (child): child is HTMLElement => child instanceof HTMLElement,
+        );
+
+        const tl = gsap.timeline({
+          defaults: { ease: "power4.out" },
+        });
+
+        // Start anchored at exact center of its final position as a tiny circle
+        tl.set(nav, {
+          opacity: 0,
+          scale: 0.15,
+          clipPath: "circle(0% at 50% 50%)",
+          transformOrigin: "50% 50%",
+        });
+
+        if (innerItems.length) {
+          tl.set(innerItems, {
+            opacity: 0,
+            scale: 0.85,
+            transformOrigin: "50% 50%",
+          });
+        }
+
+        // Phase 1: Appear as a small centered circle
+        tl.to(nav, {
+          opacity: 1,
+          scale: 0.45,
+          clipPath: "circle(26px at 50% 50%)",
+          duration: 0.25,
+          ease: "power2.out",
+        });
+
+        // Phase 2: Smoothly expand and unfold outward into the complete Navbar shape
+        tl.to(
+          nav,
+          {
+            scale: 1,
+            clipPath: "circle(160% at 50% 50%)",
+            duration: 0.68,
+            ease: "expo.out",
+          },
+          "-=0.05",
+        );
+
+        // Phase 3: Reveal inner elements in sync with the expanding shape
+        if (innerItems.length) {
+          tl.to(
+            innerItems,
+            {
+              opacity: 1,
+              scale: 1,
+              duration: 0.45,
+              stagger: 0.035,
+              ease: "power2.out",
+            },
+            "-=0.48",
+          );
+        }
+
+        // Clean up inline styles so all tooltips, hovers, and magnification work natively
+        tl.set(nav, {
+          clearProps: "clipPath,transform,opacity",
+        });
+        if (innerItems.length) {
+          tl.set(innerItems, {
+            clearProps: "all",
+          });
+        }
+      });
+    });
+
+    return () => ctx.revert();
+  }, []);
 
   // Note: no CSS transition on `transform` here. The scale is driven by the
   // rAF loop above, and a CSS transition would fight it.
@@ -175,6 +266,7 @@ export default function Navbar() {
       {/* Desktop text navigation */}
       <header className="sticky top-0 z-50 hidden w-full px-4 pt-3 sm:px-6 md:block">
         <nav
+          ref={desktopNavRef}
           aria-label="Main navigation"
           className="mx-auto flex w-fit items-center gap-1.5 rounded-full text-[#111111] dark:text-[#F5F5F5]">
           <NavLink
