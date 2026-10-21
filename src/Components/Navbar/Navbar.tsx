@@ -152,7 +152,7 @@ function TooltipLabel({ children }: { children: ReactNode }) {
   // The label sits inside a scaled icon, so it counter-scales by 1/scale to
   // keep its text at a constant size while following the icon upward.
   return (
-    <span className="pointer-events-none absolute bottom-[120%] left-1/2 z-10 origin-bottom whitespace-nowrap rounded-lg border border-neutral-200 bg-white px-2 py-1.5 font-geist-mono text-xs font-medium text-[#111111] opacity-0 shadow-sm transition-opacity [transform:translateX(-50%)_scale(calc(1/var(--dock-scale,1)))] [@media(hover:hover)]:group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none dark:border-neutral-800 dark:bg-[#181818] dark:text-[#F5F5F5]">
+    <span className="pointer-events-none absolute bottom-[120%] left-1/2 z-10 origin-bottom whitespace-nowrap rounded-lg border border-neutral-800 bg-[#181818] px-2 py-1.5 font-geist-mono text-xs font-medium text-[#F5F5F5] opacity-0 shadow-sm transition-opacity [transform:translateX(-50%)_scale(calc(1/var(--dock-scale,1)))] [@media(hover:hover)]:group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none dark:border-neutral-200 dark:bg-white dark:text-[#111111]">
       {children}
     </span>
   );
@@ -257,9 +257,9 @@ export default function Navbar() {
   // Note: no CSS transition on `transform` here. The scale is driven by the
   // rAF loop above, and a CSS transition would fight it.
   const itemBaseClass =
-    "group relative grid size-10 shrink-0 origin-center touch-manipulation select-none place-items-center rounded-[14px] border transition-all duration-150 ease-out will-change-transform [-webkit-tap-highlight-color:transparent] active:scale-95 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111111] dark:focus-visible:outline-white motion-reduce:transition-none sm:size-11";
-  const itemClass = `${itemBaseClass} border-neutral-200/90 bg-white text-[#111111] shadow-[0_1px_3px_rgba(0,0,0,0.04)] [@media(hover:hover)]:hover:bg-neutral-50 active:bg-neutral-100 dark:border-neutral-800 dark:bg-[#181818] dark:text-[#F5F5F5] dark:shadow-none [@media(hover:hover)]:dark:hover:bg-[#222222] active:dark:bg-[#262626]`;
-  const activeItemClass = `${itemBaseClass} border-[#111111] bg-[#111111] text-white shadow-sm [@media(hover:hover)]:hover:bg-[#111111] active:bg-[#111111] dark:border-white dark:bg-white dark:text-[#111111] dark:shadow-[0_2px_6px_rgba(255,255,255,0.14)] [@media(hover:hover)]:dark:hover:bg-neutral-200 active:dark:bg-neutral-200`;
+    "group relative grid size-10 shrink-0 origin-center touch-manipulation select-none place-items-center rounded-[14px] border transition-all duration-150 ease-out will-change-transform [-webkit-tap-highlight-color:transparent] active:scale-95 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white dark:focus-visible:outline-[#111111] motion-reduce:transition-none sm:size-11";
+  const itemClass = `${itemBaseClass} border-neutral-800 bg-[#181818] text-[#F5F5F5] shadow-none [@media(hover:hover)]:hover:bg-[#222222] active:bg-[#262626] dark:border-neutral-200/90 dark:bg-white dark:text-[#111111] dark:shadow-[0_1px_3px_rgba(0,0,0,0.04)] [@media(hover:hover)]:dark:hover:bg-neutral-50 active:dark:bg-neutral-100`;
+  const activeItemClass = `${itemBaseClass} border-white bg-white text-[#111111] shadow-[0_2px_6px_rgba(255,255,255,0.14)] [@media(hover:hover)]:hover:bg-neutral-200 active:bg-neutral-200 dark:border-[#111111] dark:bg-[#111111] dark:text-white dark:shadow-sm [@media(hover:hover)]:dark:hover:bg-[#111111] active:dark:bg-[#111111]`;
 
   return (
     <>
@@ -357,7 +357,7 @@ export default function Navbar() {
         style={{
           bottom: "max(1rem, env(safe-area-inset-bottom))",
         }}
-        className="fixed bottom-4 inset-x-0 z-50 mx-auto flex w-fit items-center justify-center gap-1.5 sm:gap-2 rounded-[22px] border border-neutral-200/90 bg-white/95 p-1.5 shadow-[0_8px_30px_rgba(0,0,0,0.12)] backdrop-blur-md md:hidden dark:border-neutral-800/90 dark:bg-[#121212]/95 dark:shadow-[0_8px_30px_rgba(0,0,0,0.6)]">
+        className="fixed bottom-4 inset-x-0 z-50 mx-auto flex w-fit items-center justify-center gap-1.5 sm:gap-2 rounded-[22px] border border-neutral-800/90 bg-[#121212]/95 p-1.5 shadow-[0_8px_30px_rgba(0,0,0,0.6)] backdrop-blur-md md:hidden dark:border-neutral-200/90 dark:bg-white/95 dark:shadow-[0_8px_30px_rgba(0,0,0,0.12)]">
         <NavLink
           to="/"
           aria-label="Home"
@@ -368,7 +368,7 @@ export default function Navbar() {
               behavior: "smooth",
             });
           }}
-          className="group relative grid size-10 shrink-0 origin-center select-none place-items-center rounded-[14px] bg-[#111111] dark:bg-[#1c1c1c] border border-transparent dark:border-neutral-800 text-white shadow-sm transition-transform duration-150 active:scale-95 sm:size-11 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111111] dark:focus-visible:outline-white">
+          className="group relative grid size-10 shrink-0 origin-center select-none place-items-center rounded-[14px] bg-[#1c1c1c] dark:bg-[#111111] border border-neutral-800 dark:border-transparent text-white shadow-sm transition-transform duration-150 active:scale-95 sm:size-11 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white dark:focus-visible:outline-[#111111]">
           <img
             src={logoLight}
             alt="Mohamed Osama"
@@ -430,7 +430,7 @@ export default function Navbar() {
           aria-label={`Change language to ${language === "EN" ? "Arabic" : "English"}`}
           onClick={() => setLanguage((value) => (value === "EN" ? "AR" : "EN"))}
           data-dock-item
-          className="group relative flex h-10 shrink-0 origin-center touch-manipulation select-none items-center justify-center gap-1 rounded-[14px] border border-neutral-200/90 bg-white px-2.5 text-[#111111] shadow-[0_1px_3px_rgba(0,0,0,0.04)] transition-all duration-150 ease-out will-change-transform [-webkit-tap-highlight-color:transparent] active:scale-95 [@media(hover:hover)]:hover:bg-neutral-50 active:bg-neutral-100 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111111] motion-reduce:transition-none sm:h-11 sm:px-3 dark:border-neutral-800 dark:bg-[#181818] dark:text-[#F5F5F5] dark:shadow-none [@media(hover:hover)]:dark:hover:bg-[#222222] dark:focus-visible:outline-white">
+          className="group relative flex h-10 shrink-0 origin-center touch-manipulation select-none items-center justify-center gap-1 rounded-[14px] border border-neutral-800 bg-[#181818] px-2.5 text-[#F5F5F5] shadow-none transition-all duration-150 ease-out will-change-transform [-webkit-tap-highlight-color:transparent] active:scale-95 [@media(hover:hover)]:hover:bg-[#222222] active:bg-[#262626] focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white motion-reduce:transition-none sm:h-11 sm:px-3 dark:border-neutral-200/90 dark:bg-white dark:text-[#111111] dark:shadow-[0_1px_3px_rgba(0,0,0,0.04)] [@media(hover:hover)]:dark:hover:bg-neutral-50 dark:focus-visible:outline-[#111111]">
           <Globe2
             aria-hidden="true"
             className="size-4 sm:size-4.5 shrink-0"
