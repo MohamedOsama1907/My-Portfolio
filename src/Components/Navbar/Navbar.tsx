@@ -6,8 +6,10 @@ import {
   type ReactNode,
 } from "react";
 import { Download, Folder, Globe2, Mail, Moon, Sun } from "lucide-react";
-import { Link, NavLink } from "react-router";
-import logo from "../../../public/mohamedDark.png";
+import { NavLink } from "react-router";
+import logoDark from "../../../public/mohamedDark.png";
+import logoLight from "../../../public/mohamed.png";
+import { useTheme } from "../../context/ThemeContext";
 
 const links = [
   { label: "Home", href: "/" },
@@ -149,14 +151,14 @@ function TooltipLabel({ children }: { children: ReactNode }) {
   // The label sits inside a scaled icon, so it counter-scales by 1/scale to
   // keep its text at a constant size while following the icon upward.
   return (
-    <span className="pointer-events-none absolute bottom-[120%] left-1/2 z-10 origin-bottom whitespace-nowrap rounded-lg border border-neutral-200 bg-white px-2 py-1.5 font-geist-mono text-xs font-medium text-[#111111] opacity-0 shadow-sm transition-opacity [transform:translateX(-50%)_scale(calc(1/var(--dock-scale,1)))] [@media(hover:hover)]:group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none">
+    <span className="pointer-events-none absolute bottom-[120%] left-1/2 z-10 origin-bottom whitespace-nowrap rounded-lg border border-neutral-200 bg-white px-2 py-1.5 font-geist-mono text-xs font-medium text-[#111111] opacity-0 shadow-sm transition-opacity [transform:translateX(-50%)_scale(calc(1/var(--dock-scale,1)))] [@media(hover:hover)]:group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none dark:border-neutral-800 dark:bg-[#181818] dark:text-[#F5F5F5]">
       {children}
     </span>
   );
 }
 
 export default function Navbar() {
-  const [isDark, setIsDark] = useState(false);
+  const { isDark, toggleTheme } = useTheme();
   const [language, setLanguage] = useState<"EN" | "AR">("EN");
   const { dockRef, onPointerEnter, onPointerMove, onPointerLeave } =
     useDockMagnification();
@@ -164,107 +166,146 @@ export default function Navbar() {
   // Note: no CSS transition on `transform` here. The scale is driven by the
   // rAF loop above, and a CSS transition would fight it.
   const itemBaseClass =
-    "group relative grid size-11 shrink-0 origin-bottom touch-manipulation select-none place-items-center rounded-xl border transition-colors duration-150 ease-out will-change-transform [-webkit-tap-highlight-color:transparent] focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111111] motion-reduce:transition-none sm:size-12";
-  const itemClass = `${itemBaseClass} border-neutral-200 bg-white text-[#111111] shadow-[0_2px_4px_rgba(0,0,0,0.1)] [@media(hover:hover)]:hover:bg-neutral-50 active:bg-neutral-100`;
-  const activeItemClass = `${itemBaseClass} border-[#111111] bg-[#111111] text-[#FAFAFA] shadow-[0_2px_4px_rgba(0,0,0,0.14)] [@media(hover:hover)]:hover:bg-[#111111] active:bg-[#111111]`;
+    "group relative grid size-10 shrink-0 origin-center touch-manipulation select-none place-items-center rounded-[14px] border transition-all duration-150 ease-out will-change-transform [-webkit-tap-highlight-color:transparent] active:scale-95 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111111] dark:focus-visible:outline-white motion-reduce:transition-none sm:size-11";
+  const itemClass = `${itemBaseClass} border-neutral-200/90 bg-white text-[#111111] shadow-[0_1px_3px_rgba(0,0,0,0.04)] [@media(hover:hover)]:hover:bg-neutral-50 active:bg-neutral-100 dark:border-neutral-800 dark:bg-[#181818] dark:text-[#F5F5F5] dark:shadow-none [@media(hover:hover)]:dark:hover:bg-[#222222] active:dark:bg-[#262626]`;
+  const activeItemClass = `${itemBaseClass} border-[#111111] bg-[#111111] text-white shadow-sm [@media(hover:hover)]:hover:bg-[#111111] active:bg-[#111111] dark:border-white dark:bg-white dark:text-[#111111] dark:shadow-[0_2px_6px_rgba(255,255,255,0.14)] [@media(hover:hover)]:dark:hover:bg-neutral-200 active:dark:bg-neutral-200`;
 
   return (
-    <header className="w-full px-4 pt-3 sm:px-6">
-      {/* Preserve the existing text navigation on desktop. */}
-      <nav
-        aria-label="Main navigation"
-        className="mx-auto hidden w-fit items-center gap-1.5 rounded-full text-[#111111] md:flex">
-        <NavLink
-          to="/"
-          aria-label="Mohamed Osama home"
-          className="grid size-11 shrink-0 place-items-center rounded-full border-[3px] border-[#111111] p-1 font-[Bebas_Neue] text-lg text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111111]">
-          <img src={logo} alt="logo image" className="img-fluid" />
-        </NavLink>
+    <>
+      {/* Desktop text navigation */}
+      <header className="sticky top-0 z-50 hidden w-full px-4 pt-3 sm:px-6 md:block">
+        <nav
+          aria-label="Main navigation"
+          className="mx-auto flex w-fit items-center gap-1.5 rounded-full text-[#111111] dark:text-[#F5F5F5]">
+          <NavLink
+            onClick={() => {
+              window.scrollTo({
+                top: 0,
+                behavior: "smooth",
+              });
+            }}
+            to="/"
+            aria-label="Mohamed Osama home"
+            className="grid size-11 bg-[#fafafa] dark:bg-[#141414] shrink-0 place-items-center rounded-full border-[3px] border-[#111111] dark:border-neutral-200 p-1 font-[Bebas_Neue] text-lg text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111111] dark:focus-visible:outline-white">
+            <img
+              src={isDark ? logoLight : logoDark}
+              alt="logo image"
+              className="img-fluid"
+            />
+          </NavLink>
 
-        <div className="flex items-center justify-center gap-1 rounded-full border border-[#111111] bg-[#111111] p-[2px]">
-          {links.map((link) => (
-            <NavLink
-              key={link.label}
-              to={link.href}
-              className="group relative flex items-center justify-center whitespace-nowrap rounded-full bg-white px-5 py-2.5 font-geist-mono text-sm font-bold uppercase leading-none tracking-wide text-[#111111]  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111111] lg:text-lg">
-              {link.label}
-            </NavLink>
-          ))}
-          <Link
-            to="/cv.pdf"
-            download
-            className="ml-0.5 flex shrink-0 items-center gap-1 whitespace-nowrap rounded-full bg-white px-4 py-2.5 font-geist-mono text-sm font-bold uppercase leading-none tracking-wide transition-colors  focus-visible:outline-2 focus-visible:outline-offset-2  lg:text-lg">
-            CV <span aria-hidden="true">↓</span>
-          </Link>
-        </div>
+          <div className="flex overflow-hidden items-center justify-center gap-1 rounded-full border border-[#111111] bg-[#111111] dark:border-neutral-800 dark:bg-[#161616] p-[2px]">
+            {links.map((link) => (
+              <NavLink
+                key={link.label}
+                to={link.href}
+                onClick={() => {
+                  if (link.label === "Home") {
+                    window.scrollTo({
+                      top: 0,
+                      behavior: "smooth",
+                    });
+                  }
+                }}
+                className={({ isActive }) =>
+                  `group relative isolate flex items-center justify-center whitespace-nowrap rounded-full bg-white dark:bg-[#1e1e1e] px-5 py-2.5 font-geist-mono text-sm font-bold uppercase leading-none tracking-wide transition-colors duration-200 ease-out [@media(hover:hover)]:hover:text-[#FAFAFA] dark:[@media(hover:hover)]:hover:text-[#111111] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111111] dark:focus-visible:outline-white lg:text-lg ${
+                    isActive
+                      ? "active text-[#FAFAFA] dark:text-[#111111]"
+                      : "text-[#111111] dark:text-[#F5F5F5]"
+                  }`
+                }>
+                {({ isActive }) => (
+                  <>
+                    <span
+                      aria-hidden="true"
+                      className={`absolute inset-x-0 bottom-0 z-0 rounded-full bg-[#111111] dark:bg-[#F5F5F5] transition-[height] duration-300 ease-out group-hover:h-full motion-reduce:transition-none ${isActive ? "h-full" : "h-0"}`}
+                    />
+                    <span className="relative z-10">{link.label}</span>
+                  </>
+                )}
+              </NavLink>
+            ))}
+            <a
+              href="/cv.pdf"
+              download="Mohamed_Osama_CV.pdf"
+              className="ml-0.5 flex shrink-0 items-center gap-1 whitespace-nowrap rounded-full bg-white dark:bg-[#1e1e1e] text-[#111111] dark:text-[#F5F5F5] hover:bg-neutral-100 dark:hover:bg-[#252525] px-4 py-2.5 font-geist-mono text-sm font-bold uppercase leading-none tracking-wide transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 dark:focus-visible:outline-white lg:text-lg">
+              CV <span aria-hidden="true">↓</span>
+            </a>
+          </div>
 
-        <button
-          type="button"
-          aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
-          aria-pressed={isDark}
-          onClick={() => setIsDark((value) => !value)}
-          className="grid size-11 shrink-0 place-items-center rounded-full bg-[#111111] text-white transition-colors hover:bg-neutral-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111111]">
-          {isDark ? (
-            <Sun aria-hidden="true" className="size-5" />
-          ) : (
-            <Moon aria-hidden="true" className="size-5" />
-          )}
-        </button>
-        <button
-          type="button"
-          aria-label={`Change language to ${language === "EN" ? "Arabic" : "English"}`}
-          onClick={() => setLanguage((value) => (value === "EN" ? "AR" : "EN"))}
-          className="grid size-11 shrink-0 place-items-center rounded-full bg-[#111111] text-white transition-colors hover:bg-neutral-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111111]">
-          <Globe2 aria-hidden="true" className="size-5" />
-        </button>
-      </nav>
+          <button
+            type="button"
+            aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
+            aria-pressed={isDark}
+            onClick={toggleTheme}
+            className="grid size-11 shrink-0 place-items-center rounded-full bg-[#111111] dark:bg-[#1e1e1e] border border-transparent dark:border-neutral-800 text-white dark:text-[#F5F5F5] transition-colors hover:bg-neutral-800 dark:hover:bg-[#2a2a2a] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111111] dark:focus-visible:outline-white">
+            {isDark ? (
+              <Sun aria-hidden="true" className="size-5 text-amber-400" />
+            ) : (
+              <Moon aria-hidden="true" className="size-5" />
+            )}
+          </button>
+          <button
+            type="button"
+            aria-label={`Change language to ${language === "EN" ? "Arabic" : "English"}`}
+            onClick={() => setLanguage((value) => (value === "EN" ? "AR" : "EN"))}
+            className="grid size-11 shrink-0 place-items-center rounded-full bg-[#111111] dark:bg-[#1e1e1e] border border-transparent dark:border-neutral-800 text-white dark:text-[#F5F5F5] transition-colors hover:bg-neutral-800 dark:hover:bg-[#2a2a2a] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111111] dark:focus-visible:outline-white">
+            <Globe2 aria-hidden="true" className="size-5" />
+          </button>
+        </nav>
+      </header>
 
-      {/* Compact dock navigation for touch-first and narrow screens. */}
+      {/* Compact dock navigation for touch-first and narrow screens (bottom docked) */}
       <nav
         ref={dockRef}
-        aria-label="Main navigation"
+        aria-label="Mobile navigation"
         onPointerEnter={onPointerEnter}
         onPointerMove={onPointerMove}
         onPointerLeave={onPointerLeave}
-        className="fixed bottom-4 left-1/2 z-50 flex w-fit max-w-[calc(100vw-1rem)] -translate-x-1/2 items-center gap-2 rounded-[22px] border border-neutral-200/90 bg-[#FAFAFA]/95 p-2 shadow-[0_12px_36px_rgba(0,0,0,0.12)] backdrop-blur-sm md:hidden sm:gap-2 sm:p-3">
+        style={{
+          bottom: "max(1rem, env(safe-area-inset-bottom))",
+        }}
+        className="fixed bottom-4 inset-x-0 z-50 mx-auto flex w-fit items-center justify-center gap-1.5 sm:gap-2 rounded-[22px] border border-neutral-200/90 bg-white/95 p-1.5 shadow-[0_8px_30px_rgba(0,0,0,0.12)] backdrop-blur-md md:hidden dark:border-neutral-800/90 dark:bg-[#121212]/95 dark:shadow-[0_8px_30px_rgba(0,0,0,0.6)]">
         <NavLink
           to="/"
           aria-label="Home"
           data-dock-item
-          className={({ isActive }) =>
-            `${itemBaseClass} font-geist-mono text-sm font-bold ${
-              isActive
-                ? "border-[#111111] bg-[#111111] text-[#FAFAFA] shadow-[0_2px_4px_rgba(0,0,0,0.14)] [@media(hover:hover)]:hover:bg-[#111111] active:bg-[#111111]"
-                : "border-neutral-200 bg-white text-[#111111] shadow-[0_2px_4px_rgba(0,0,0,0.1)] [@media(hover:hover)]:hover:bg-neutral-50 active:bg-neutral-100"
-            }`
-          }>
-          <>
-            MO
-            <TooltipLabel>Home</TooltipLabel>
-          </>
+          onClick={() => {
+            window.scrollTo({
+              top: 0,
+              behavior: "smooth",
+            });
+          }}
+          className="group relative grid size-10 shrink-0 origin-center select-none place-items-center rounded-[14px] bg-[#111111] dark:bg-[#1c1c1c] border border-transparent dark:border-neutral-800 text-white shadow-sm transition-transform duration-150 active:scale-95 sm:size-11 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111111] dark:focus-visible:outline-white">
+          <img
+            src={logoLight}
+            alt="Mohamed Osama"
+            className="size-6 object-contain"
+          />
+          <TooltipLabel>Home</TooltipLabel>
         </NavLink>
         {dockItems.map(({ label, href, Icon, download }) => {
           const content = (
             <>
               <Icon
                 aria-hidden="true"
-                className="size-5 sm:size-6"
-                strokeWidth={2}
+                className="size-4.5 sm:size-5"
+                strokeWidth={1.8}
               />
               <TooltipLabel>{label}</TooltipLabel>
             </>
           );
 
           return download ? (
-            <Link
+            <a
               key={label}
-              to={href}
-              download
+              href={href}
+              download="Mohamed_Osama_CV.pdf"
               aria-label={label}
               data-dock-item
               className={itemClass}>
               {content}
-            </Link>
+            </a>
           ) : (
             <NavLink
               key={label}
@@ -282,13 +323,13 @@ export default function Navbar() {
           type="button"
           aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
           aria-pressed={isDark}
-          onClick={() => setIsDark((value) => !value)}
+          onClick={toggleTheme}
           data-dock-item
           className={itemClass}>
           {isDark ? (
-            <Sun aria-hidden="true" className="size-5 sm:size-6" />
+            <Sun aria-hidden="true" className="size-4.5 sm:size-5 text-amber-400" strokeWidth={1.8} />
           ) : (
-            <Moon aria-hidden="true" className="size-5 sm:size-6" />
+            <Moon aria-hidden="true" className="size-4.5 sm:size-5" strokeWidth={1.8} />
           )}
           <TooltipLabel>{isDark ? "Light mode" : "Dark mode"}</TooltipLabel>
         </button>
@@ -297,15 +338,18 @@ export default function Navbar() {
           aria-label={`Change language to ${language === "EN" ? "Arabic" : "English"}`}
           onClick={() => setLanguage((value) => (value === "EN" ? "AR" : "EN"))}
           data-dock-item
-          className={`${itemClass} px-1`}>
+          className="group relative flex h-10 shrink-0 origin-center touch-manipulation select-none items-center justify-center gap-1 rounded-[14px] border border-neutral-200/90 bg-white px-2.5 text-[#111111] shadow-[0_1px_3px_rgba(0,0,0,0.04)] transition-all duration-150 ease-out will-change-transform [-webkit-tap-highlight-color:transparent] active:scale-95 [@media(hover:hover)]:hover:bg-neutral-50 active:bg-neutral-100 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111111] motion-reduce:transition-none sm:h-11 sm:px-3 dark:border-neutral-800 dark:bg-[#181818] dark:text-[#F5F5F5] dark:shadow-none [@media(hover:hover)]:dark:hover:bg-[#222222] dark:focus-visible:outline-white">
           <Globe2
             aria-hidden="true"
-            className="size-5 sm:size-6"
-            strokeWidth={2}
+            className="size-4 sm:size-4.5 shrink-0"
+            strokeWidth={1.8}
           />
+          <span className="font-geist-mono text-xs font-bold uppercase leading-none tracking-tight">
+            {language === "EN" ? "AR" : "EN"}
+          </span>
           <TooltipLabel>Language: {language}</TooltipLabel>
         </button>
       </nav>
-    </header>
+    </>
   );
 }
