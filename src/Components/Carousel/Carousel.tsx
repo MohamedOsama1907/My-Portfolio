@@ -8,18 +8,6 @@ import {
 import useEmblaCarousel from "embla-carousel-react";
 import type { EmblaCarouselType, EmblaEventType } from "embla-carousel";
 import { ChevronLeft, ChevronRight, ExternalLink, Eye } from "lucide-react";
-import mavic from "../../assets/1-MavicPro.png";
-import uxReview from "../../assets/2-UXReview.svg";
-import mudaber from "../../assets/3-mudaber.png";
-import clarity from "../../assets/4-Clarity.png";
-import gameArena from "../../assets/5-GameArena.png";
-import contactHub from "../../assets/6-ContactHub.svg";
-import portfolio from "../../assets/7-portfolio.jpg";
-import cosmos from "../../assets/8-COSMOS.png.jpg";
-import quizApp from "../../assets/9-QuizApp.png";
-import cineVerse from "../../assets/10-CineVerse.png";
-import socialApp from "../../assets/11-SocialApp.svg";
-import audioGuard from "../../assets/12-AudioGuard.svg";
 
 import { PROJECTS_DATA, type ProjectItem } from "../../data/projectsData";
 
@@ -27,45 +15,11 @@ export type Project = ProjectItem & {
   details?: string;
 };
 
-// Any link left out renders as a dimmed, non-clickable action.
-const projectImages = [
-  { name: "Mavic Pro", image: mavic },
-  { name: "UX Review", image: uxReview },
-  { name: "Mudaber", image: mudaber },
-  { name: "Clarity", image: clarity },
-  { name: "Game Arena", image: gameArena },
-  { name: "ContactHub", image: contactHub },
-  { name: "Portfolio", image: portfolio },
-  { name: "COSMOS", image: cosmos },
-  { name: "Quiz App", image: quizApp },
-  { name: "CineVerse", image: cineVerse },
-  { name: "Social App", image: socialApp },
-  { name: "AudioGuard", image: audioGuard },
-];
-
-const projects: Project[] = projectImages.map((item) => {
-  const match = PROJECTS_DATA.find(
-    (p) => p.name.toLowerCase() === item.name.toLowerCase(),
-  );
-  if (match) {
-    return {
-      ...match,
-      details: `/projects/${match.id}`,
-    };
-  }
-  return {
-    id: item.name.toLowerCase().replace(/\s+/g, "-"),
-    name: item.name,
-    category: "Web Applications",
-    badge: "Project",
-    image: item.image,
-    description: "",
-    longDescription: "",
-    technologies: [],
-    highlights: [],
-    details: `/projects/${item.name.toLowerCase().replace(/\s+/g, "-")}`,
-  };
-});
+// Use the same project catalog and order as the All Projects section.
+const projects: Project[] = PROJECTS_DATA.map((project) => ({
+  ...project,
+  details: `/projects/${project.id}`,
+}));
 
 const TWEEN_FACTOR_BASE = 1; // adjacent snap => fully "side" state
 const MIN_SCALE = 0.78;

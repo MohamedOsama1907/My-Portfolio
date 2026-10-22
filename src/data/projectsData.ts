@@ -10,6 +10,7 @@ import quizApp from "../assets/9-QuizApp.png";
 import cineVerse from "../assets/10-CineVerse.png";
 import socialApp from "../assets/11-SocialApp.svg";
 import audioGuard from "../assets/12-AudioGuard.svg";
+import currentPortfolio from "../assets/13-CurrentPortfolio.png";
 
 export type Category =
   | "All"
@@ -320,4 +321,52 @@ export const PROJECTS_DATA: ProjectItem[] = [
     demo: "https://mohamedosama1907.github.io/Assignment-10/",
     github: "https://github.com/MohamedOsama1907/Assignment-10",
   },
+  {
+    id: "current-portfolio",
+    name: "Current Portfolio",
+    category: "Portfolio",
+    badge: "Personal Portfolio",
+    image: currentPortfolio,
+    description:
+      "A responsive portfolio showcasing frontend projects, skills, and experience.",
+    longDescription:
+      "My current portfolio brings together selected projects, technical skills, experience, and contact options in a responsive interface. It includes project browsing with details, live demos, and source links, plus light and dark themes.",
+    technologies: [
+      "React.js",
+      "TypeScript",
+      "Vite",
+      "Tailwind CSS",
+      "GSAP",
+      "Embla Carousel",
+      "Lucide React",
+    ],
+    highlights: [
+      "Responsive portfolio sections for projects, skills, education, and contact",
+      "Project carousel and cards with details, live demo, and source links",
+      "Light and dark themes with reduced-motion support",
+      "Animated interactions built with GSAP and Embla Carousel",
+    ],
+    demo: "https://mohamed-osama1907.vercel.app/",
+    github: "https://github.com/MohamedOsama1907/My-Portfolio",
+  },
 ];
+
+const PROJECT_ORDER = [
+  "social-app",
+  "current-portfolio",
+  "quiz-app",
+  "audioguard",
+  "cineverse",
+  "cosmos",
+  "mudaber",
+  "portfolio",
+  "contacthub",
+  "game-arena",
+  "clarity",
+  "ux-review",
+  "mavic-pro",
+];
+
+PROJECTS_DATA.sort(
+  (a, b) => PROJECT_ORDER.indexOf(a.id) - PROJECT_ORDER.indexOf(b.id),
+);

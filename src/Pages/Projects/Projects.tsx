@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
+  ChevronLeft,
+  ChevronRight,
   ArrowRight,
   ExternalLink,
   Sparkles,
@@ -44,6 +46,7 @@ const CATEGORIES: { label: Category; count: number }[] = [
 
 export default function Projects() {
   const [selectedCategory, setSelectedCategory] = useState<Category>("All");
+  const [currentPage, setCurrentPage] = useState(1);
   const [activeModalProject, setActiveModalProject] =
     useState<ProjectItem | null>(null);
 
@@ -51,11 +54,29 @@ export default function Projects() {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const filtersRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
+  const shouldScrollToProjects = useRef(false);
 
   const filteredProjects =
     selectedCategory === "All"
       ? PROJECTS
       : PROJECTS.filter((project) => project.category === selectedCategory);
+  const projectsPerPage = 9;
+  const pageCount =
+    selectedCategory === "All"
+      ? Math.ceil(filteredProjects.length / projectsPerPage)
+      : 1;
+  const visibleProjects =
+    selectedCategory === "All"
+      ? filteredProjects.slice(
+          (currentPage - 1) * projectsPerPage,
+          currentPage * projectsPerPage,
+        )
+      : filteredProjects;
+
+  const changePage = (page: number) => {
+    shouldScrollToProjects.current = true;
+    setCurrentPage(page);
+  };
 
   // Initial page entrance animation
   useEffect(() => {
@@ -138,7 +159,20 @@ export default function Projects() {
         },
       );
     }
-  }, [selectedCategory]);
+  }, [selectedCategory, currentPage]);
+
+  // Scroll to the section heading after the newly selected page has rendered.
+  useEffect(() => {
+    if (!shouldScrollToProjects.current) return;
+    shouldScrollToProjects.current = false;
+
+    headingRef.current?.scrollIntoView({
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "auto"
+        : "smooth",
+      block: "start",
+    });
+  }, [currentPage]);
 
   return (
     <div ref={containerRef} className="w-full py-4 pb-15 sm:py-6">
@@ -146,7 +180,7 @@ export default function Projects() {
       <header className="max-w-3xl">
         <h2
           ref={headingRef}
-          className="font-[Bebas_Neue] text-[29px] uppercase leading-none text-[#111111] dark:text-[#F5F5F5] sm:text-[48px]">
+          className="scroll-mt-20 font-[Bebas_Neue] text-[29px] uppercase leading-none text-[#111111] dark:text-[#F5F5F5] sm:text-[48px]">
           <span className="inline-block overflow-hidden py-1">
             <span className="proj-heading-word inline-block">Projects</span>
           </span>
@@ -169,7 +203,10 @@ export default function Projects() {
             <button
               key={label}
               type="button"
-              onClick={() => setSelectedCategory(label)}
+              onClick={() => {
+                setSelectedCategory(label);
+                setCurrentPage(1);
+              }}
               aria-pressed={isActive}
               className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-wider transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111111] dark:focus-visible:outline-white sm:text-sm ${
                 isActive
@@ -195,7 +232,7 @@ export default function Projects() {
         ref={gridRef}
         aria-label="Projects list"
         className="mt-8 grid grid-cols-1 gap-6 sm:mt-10 md:grid-cols-2 lg:grid-cols-3 sm:gap-7">
-        {filteredProjects.map((project) => (
+        {visibleProjects.map((project) => (
           <article
             key={project.id}
             className="project-card-item group relative flex flex-col overflow-hidden rounded-[22px] border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#121212] shadow-[0_4px_20px_rgba(0,0,0,0.03)] transition-all duration-300 hover:-translate-y-1 hover:border-neutral-300 hover:shadow-[0_16px_36px_rgba(0,0,0,0.08)] dark:shadow-[0_4px_20px_rgba(0,0,0,0.4)] dark:hover:border-neutral-700 dark:hover:shadow-[0_16px_36px_rgba(0,0,0,0.6)]">
@@ -310,6 +347,36 @@ export default function Projects() {
           </article>
         ))}
       </main>
+
+      {selectedCategory === "All" && pageCount > 1 && (
+        <nav
+          aria-label="Project pages"
+          className="mt-8 flex items-center justify-center gap-3">
+          <button
+            type="button"
+            onClick={() => changePage(currentPage - 1)}
+            disabled={currentPage === 1}
+            aria-label="Show previous projects"
+            className="inline-flex min-h-10 items-center gap-2 rounded-full border border-neutral-200/90 bg-white px-4 text-sm font-semibold text-neutral-700 transition-colors hover:border-neutral-400 hover:text-[#111111] disabled:pointer-events-none disabled:opacity-40 dark:border-neutral-800 dark:bg-[#161616] dark:text-neutral-300 dark:hover:border-neutral-600 dark:hover:text-white">
+            <ChevronLeft aria-hidden="true" className="size-4" />
+            Previous
+          </button>
+          <span
+            aria-live="polite"
+            className="min-w-16 text-center font-geist-mono text-xs font-semibold text-neutral-500 dark:text-neutral-400">
+            {currentPage} / {pageCount}
+          </span>
+          <button
+            type="button"
+            onClick={() => changePage(currentPage + 1)}
+            disabled={currentPage === pageCount}
+            aria-label="Show next projects"
+            className="inline-flex min-h-10 items-center gap-2 rounded-full border border-neutral-200/90 bg-white px-4 text-sm font-semibold text-neutral-700 transition-colors hover:border-neutral-400 hover:text-[#111111] disabled:pointer-events-none disabled:opacity-40 dark:border-neutral-800 dark:bg-[#161616] dark:text-neutral-300 dark:hover:border-neutral-600 dark:hover:text-white">
+            Next
+            <ChevronRight aria-hidden="true" className="size-4" />
+          </button>
+        </nav>
+      )}
 
       {/* Project Details Modal */}
       <ProjectModal
