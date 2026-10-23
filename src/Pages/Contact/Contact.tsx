@@ -92,8 +92,8 @@ export default function Contact() {
   const validateFunction: SubmitHandler<ContactFormData> = async (formData) => {
     try {
       const templateParams = {
-        sender_name: formData.name,
-        email_address: formData.email,
+        name: formData.name,
+        email: formData.email,
         subject: formData.subject,
         message: formData.message,
       };
