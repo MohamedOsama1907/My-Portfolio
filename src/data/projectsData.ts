@@ -11,12 +11,10 @@ import cineVerse from "../assets/10-CineVerse.png";
 import socialApp from "../assets/11-SocialApp.svg";
 import audioGuard from "../assets/12-AudioGuard.svg";
 import currentPortfolio from "../assets/13-CurrentPortfolio.png";
-import freshCart from "../assets/14-FreshCart.png";
 
 export type Category =
   | "All"
   | "Web Applications"
-  | "E-commerce"
   | "Landing Pages"
   | "Education & Learning"
   | "Entertainment & Games"
@@ -37,21 +35,6 @@ export type ProjectItem = {
 };
 
 export const PROJECTS_DATA: ProjectItem[] = [
-  {
-    id: "freshcart",
-    name: "FreshCart E-commerce",
-    category: "E-commerce",
-    badge: "Online Store",
-    image: freshCart,
-    description:
-      "An e-commerce experience for browsing products and shopping online.",
-    longDescription:
-      "FreshCart is an e-commerce project focused on presenting products and supporting an online shopping experience.",
-    technologies: [],
-    highlights: [],
-    demo: "https://fresh-cart-e-commerce-rho.vercel.app/",
-    github: "https://github.com/MohamedOsama1907/Fresh-Cart-e-commerce-",
-  },
   {
     id: "cineverse",
     name: "CineVerse",
@@ -369,7 +352,6 @@ export const PROJECTS_DATA: ProjectItem[] = [
 ];
 
 const PROJECT_ORDER = [
-  "freshcart",
   "social-app",
   "current-portfolio",
   "quiz-app",
