@@ -27,6 +27,10 @@ const CATEGORIES: { label: Category; count: number }[] = [
     count: PROJECTS.filter((p) => p.category === "Web Applications").length,
   },
   {
+    label: "E-commerce",
+    count: PROJECTS.filter((p) => p.category === "E-commerce").length,
+  },
+  {
     label: "Landing Pages",
     count: PROJECTS.filter((p) => p.category === "Landing Pages").length,
   },
