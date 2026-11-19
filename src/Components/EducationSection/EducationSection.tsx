@@ -2,20 +2,12 @@ import { useEffect, useRef } from "react";
 import { GraduationCap, MapPin, Calendar, BookOpen } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useTranslation } from "react-i18next";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const EDUCATION = {
-  degree: "Bachelor of Engineering",
-  specialization: "Systems & Computer Engineering",
-  institution: "Al-Azhar University",
-  faculty: "Faculty of Engineering",
-  location: "Cairo, Egypt",
-  startDate: "October 2023",
-  endDate: "Present",
-};
-
 export default function EducationSection() {
+  const { t } = useTranslation();
   const sectionRef = useRef<HTMLElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const headingWordsRef = useRef<HTMLHeadingElement>(null);
@@ -128,7 +120,7 @@ export default function EducationSection() {
         className="font-[Bebas_Neue] text-[29px] uppercase leading-none text-[#111111] dark:text-[#F5F5F5] sm:text-[36px]"
       >
         <span className="inline-block overflow-hidden py-1">
-          <span className="edu-heading-word inline-block">Education</span>
+          <span className="edu-heading-word inline-block">{t("education.title")}</span>
         </span>
       </h2>
 
@@ -141,7 +133,7 @@ export default function EducationSection() {
         <div
           ref={accentLineRef}
           aria-hidden="true"
-          className="absolute left-0 top-0 h-full w-[4px] origin-top bg-[#111111] dark:bg-white sm:w-[5px]"
+          className="absolute start-0 top-0 h-full w-[4px] origin-top bg-[#111111] dark:bg-white sm:w-[5px]"
         />
 
         {/* Subtle grid pattern overlay */}
@@ -169,10 +161,10 @@ export default function EducationSection() {
               </span>
               <div className="min-w-0">
                 <p className="font-[Bebas_Neue] text-[22px] uppercase leading-none tracking-wide text-[#111111] dark:text-[#F5F5F5] sm:text-[26px]">
-                  {EDUCATION.degree}
+                  {t("education.degree")}
                 </p>
                 <p className="mt-1 text-sm leading-snug text-neutral-500 dark:text-neutral-400 sm:text-[15px]">
-                  {EDUCATION.specialization}
+                  {t("education.specialization")}
                 </p>
               </div>
             </div>
@@ -187,9 +179,9 @@ export default function EducationSection() {
                   strokeWidth={1.8}
                 />
                 <p className="text-sm text-[#111111] dark:text-[#F5F5F5] sm:text-[15px]">
-                  <span className="font-semibold">{EDUCATION.institution}</span>
+                  <span className="font-semibold">{t("education.institution")}</span>
                   <span className="mx-1.5 text-neutral-300 dark:text-neutral-600">·</span>
-                  <span className="text-neutral-500 dark:text-neutral-400">{EDUCATION.faculty}</span>
+                  <span className="text-neutral-500 dark:text-neutral-400">{t("education.faculty")}</span>
                 </p>
               </div>
 
@@ -201,7 +193,7 @@ export default function EducationSection() {
                   strokeWidth={1.8}
                 />
                 <p className="text-sm text-neutral-500 dark:text-neutral-400 sm:text-[15px]">
-                  {EDUCATION.location}
+                  {t("education.location")}
                 </p>
               </div>
 
@@ -213,7 +205,7 @@ export default function EducationSection() {
                   strokeWidth={1.8}
                 />
                 <p className="text-sm text-neutral-500 dark:text-neutral-400 sm:text-[15px]">
-                  {EDUCATION.startDate}
+                  {t("education.startDate")}
                   <span className="mx-1.5 text-neutral-300 dark:text-neutral-600">—</span>
                   <span className="inline-flex items-center gap-1.5 font-semibold text-[#111111] dark:text-[#F5F5F5]">
                     <span
@@ -223,7 +215,7 @@ export default function EducationSection() {
                         animation: "edu-pulse 2s ease-in-out infinite",
                       }}
                     />
-                    {EDUCATION.endDate}
+                    {t("education.endDate")}
                   </span>
                 </p>
               </div>
@@ -233,20 +225,20 @@ export default function EducationSection() {
           {/* Right: Decorative tech chips */}
           <div className="flex flex-wrap gap-2 md:mt-1 md:max-w-[240px] md:justify-end lg:max-w-[280px]">
             {[
-              "Java",
-              "Data Structures",
-              "Algorithms",
-              "OOP",
-              "Computer Architecture",
-              "Networking",
-              "Databases",
-              "Operating Systems",
+              "subjectJava",
+              "subjectStructures",
+              "subjectAlgorithms",
+              "subjectOop",
+              "subjectArchitecture",
+              "subjectNetworking",
+              "subjectDatabases",
+              "subjectSystems",
             ].map((subject) => (
               <span
                 key={subject}
                 className="edu-chip rounded-full border border-neutral-200 dark:border-neutral-800 bg-[#fafafa] dark:bg-[#181818] px-3 py-1.5 font-[Bebas_Neue] text-[13px] uppercase leading-none tracking-wide text-neutral-500 dark:text-neutral-400 transition-colors duration-200 hover:border-neutral-300 dark:hover:border-neutral-700 hover:text-[#111111] dark:hover:text-[#F5F5F5] sm:text-sm"
               >
-                {subject}
+                {t(`education.${subject}`)}
               </span>
             ))}
           </div>

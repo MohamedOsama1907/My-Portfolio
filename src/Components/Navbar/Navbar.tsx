@@ -1,7 +1,6 @@
 import {
   useEffect,
   useRef,
-  useState,
   type PointerEvent,
   type ReactNode,
 } from "react";
@@ -11,6 +10,7 @@ import { NavLink } from "react-router";
 import logoDark from "../../../public/mohamedDark.png";
 import logoLight from "../../../public/mohamed.png";
 import { useTheme } from "../../context/ThemeContext";
+import { useTranslation } from "react-i18next";
 
 const links = [
   { label: "Home", href: "/" },
@@ -160,7 +160,17 @@ function TooltipLabel({ children }: { children: ReactNode }) {
 
 export default function Navbar() {
   const { isDark, toggleTheme } = useTheme();
-  const [language, setLanguage] = useState<"EN" | "AR">("EN");
+  const { t, i18n } = useTranslation();
+  const isArabic = i18n.resolvedLanguage === "ar";
+  const translateLink = (label: string) => {
+    if (label === "Home") return t("nav.home");
+    if (label === "Projects") return t("nav.projects");
+    if (label === "Contact") return t("nav.contact");
+    return t("nav.cv");
+  };
+  const switchLanguage = () => {
+    void i18n.changeLanguage(isArabic ? "en" : "ar");
+  };
   const desktopNavRef = useRef<HTMLElement>(null);
   const { dockRef, onPointerEnter, onPointerMove, onPointerLeave } =
     useDockMagnification();
@@ -267,7 +277,7 @@ export default function Navbar() {
       <header className="sticky top-0 z-50 hidden w-full px-4 pt-3 sm:px-6 md:block">
         <nav
           ref={desktopNavRef}
-          aria-label="Main navigation"
+          aria-label={t("nav.main")}
           className="mx-auto flex w-fit items-center gap-1.5 rounded-full text-[#111111] dark:text-[#F5F5F5]">
           <NavLink
             onClick={() => {
@@ -277,11 +287,11 @@ export default function Navbar() {
               });
             }}
             to="/"
-            aria-label="Mohamed Osama home"
+            aria-label={t("nav.homeLabel")}
             className="grid size-11 bg-[#fafafa] dark:bg-[#141414] shrink-0 place-items-center rounded-full border-[3px] border-[#111111] dark:border-neutral-200 p-1 font-[Bebas_Neue] text-lg text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111111] dark:focus-visible:outline-white">
             <img
               src={isDark ? logoLight : logoDark}
-              alt="logo image"
+              alt={t("nav.homeLabel")}
               className="img-fluid"
             />
           </NavLink>
@@ -312,7 +322,7 @@ export default function Navbar() {
                       aria-hidden="true"
                       className={`absolute inset-x-0 bottom-0 z-0 rounded-full bg-[#111111] dark:bg-[#F5F5F5] transition-[height] duration-300 ease-out group-hover:h-full motion-reduce:transition-none ${isActive ? "h-full" : "h-0"}`}
                     />
-                    <span className="relative z-10">{link.label}</span>
+                    <span className="relative z-10">{translateLink(link.label)}</span>
                   </>
                 )}
               </NavLink>
@@ -320,14 +330,14 @@ export default function Navbar() {
             <a
               href="/cv.pdf"
               download="Mohamed_Osama_CV.pdf"
-              className="ml-0.5 flex shrink-0 items-center gap-1 whitespace-nowrap rounded-full bg-white dark:bg-[#1e1e1e] text-[#111111] dark:text-[#F5F5F5] hover:bg-neutral-100 dark:hover:bg-[#252525] px-4 py-2.5 font-geist-mono text-sm font-bold uppercase leading-none tracking-wide transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 dark:focus-visible:outline-white lg:text-lg">
-              CV <span aria-hidden="true">↓</span>
+              className="ms-0.5 flex shrink-0 items-center gap-1 whitespace-nowrap rounded-full bg-white dark:bg-[#1e1e1e] text-[#111111] dark:text-[#F5F5F5] hover:bg-neutral-100 dark:hover:bg-[#252525] px-4 py-2.5 font-geist-mono text-sm font-bold uppercase leading-none tracking-wide transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 dark:focus-visible:outline-white lg:text-lg">
+              {isArabic ? "السيرة الذاتية" : "CV"} <span aria-hidden="true">↓</span>
             </a>
           </div>
 
           <button
             type="button"
-            aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
+            aria-label={isDark ? t("nav.light") : t("nav.dark")}
             aria-pressed={isDark}
             onClick={toggleTheme}
             className="grid size-11 shrink-0 place-items-center rounded-full bg-[#111111] dark:bg-[#1e1e1e] border border-transparent dark:border-neutral-800 text-white dark:text-[#F5F5F5] transition-colors hover:bg-neutral-800 dark:hover:bg-[#2a2a2a] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111111] dark:focus-visible:outline-white">
@@ -339,10 +349,11 @@ export default function Navbar() {
           </button>
           <button
             type="button"
-            aria-label={`Change language to ${language === "EN" ? "Arabic" : "English"}`}
-            onClick={() => setLanguage((value) => (value === "EN" ? "AR" : "EN"))}
-            className="grid size-11 shrink-0 place-items-center rounded-full bg-[#111111] dark:bg-[#1e1e1e] border border-transparent dark:border-neutral-800 text-white dark:text-[#F5F5F5] transition-colors hover:bg-neutral-800 dark:hover:bg-[#2a2a2a] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111111] dark:focus-visible:outline-white">
+            aria-label={isArabic ? t("nav.toEnglish") : t("nav.toArabic")}
+            onClick={switchLanguage}
+          className="flex h-11 shrink-0 items-center justify-center gap-1.5 rounded-full bg-[#111111] px-2.5 dark:bg-[#1e1e1e] border border-transparent dark:border-neutral-800 text-white dark:text-[#F5F5F5] transition-colors hover:bg-neutral-800 dark:hover:bg-[#2a2a2a] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111111] dark:focus-visible:outline-white">
             <Globe2 aria-hidden="true" className="size-5" />
+            <span className="font-geist-mono text-[10px] font-bold uppercase">{isArabic ? "EN" : "عربي"}</span>
           </button>
         </nav>
       </header>
@@ -350,7 +361,7 @@ export default function Navbar() {
       {/* Compact dock navigation for touch-first and narrow screens (bottom docked) */}
       <nav
         ref={dockRef}
-        aria-label="Mobile navigation"
+        aria-label={t("nav.mobile")}
         onPointerEnter={onPointerEnter}
         onPointerMove={onPointerMove}
         onPointerLeave={onPointerLeave}
@@ -360,7 +371,7 @@ export default function Navbar() {
         className="fixed bottom-4 inset-x-0 z-50 mx-auto flex w-fit items-center justify-center gap-1.5 sm:gap-2 rounded-[22px] border border-neutral-800/90 bg-[#121212]/95 p-1.5 shadow-[0_8px_30px_rgba(0,0,0,0.6)] backdrop-blur-md md:hidden dark:border-neutral-200/90 dark:bg-white/95 dark:shadow-[0_8px_30px_rgba(0,0,0,0.12)]">
         <NavLink
           to="/"
-          aria-label="Home"
+          aria-label={t("nav.home")}
           data-dock-item
           onClick={() => {
             window.scrollTo({
@@ -371,10 +382,10 @@ export default function Navbar() {
           className="group relative grid size-10 shrink-0 origin-center select-none place-items-center rounded-[14px] bg-[#1c1c1c] dark:bg-[#111111] border border-neutral-800 dark:border-transparent text-white shadow-sm transition-transform duration-150 active:scale-95 sm:size-11 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white dark:focus-visible:outline-[#111111]">
           <img
             src={logoLight}
-            alt="Mohamed Osama"
+            alt={t("hero.name")}
             className="size-6 object-contain"
           />
-          <TooltipLabel>Home</TooltipLabel>
+          <TooltipLabel>{t("nav.home")}</TooltipLabel>
         </NavLink>
         {dockItems.map(({ label, href, Icon, download }) => {
           const content = (
@@ -384,7 +395,7 @@ export default function Navbar() {
                 className="size-4.5 sm:size-5"
                 strokeWidth={1.8}
               />
-              <TooltipLabel>{label}</TooltipLabel>
+              <TooltipLabel>{translateLink(label)}</TooltipLabel>
             </>
           );
 
@@ -393,7 +404,7 @@ export default function Navbar() {
               key={label}
               href={href}
               download="Mohamed_Osama_CV.pdf"
-              aria-label={label}
+              aria-label={translateLink(label)}
               data-dock-item
               className={itemClass}>
               {content}
@@ -402,7 +413,7 @@ export default function Navbar() {
             <NavLink
               key={label}
               to={href}
-              aria-label={label}
+              aria-label={translateLink(label)}
               data-dock-item
               className={({ isActive }) =>
                 isActive ? activeItemClass : itemClass
@@ -413,7 +424,7 @@ export default function Navbar() {
         })}
         <button
           type="button"
-          aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
+          aria-label={isDark ? t("nav.light") : t("nav.dark")}
           aria-pressed={isDark}
           onClick={toggleTheme}
           data-dock-item
@@ -423,12 +434,12 @@ export default function Navbar() {
           ) : (
             <Moon aria-hidden="true" className="size-4.5 sm:size-5" strokeWidth={1.8} />
           )}
-          <TooltipLabel>{isDark ? "Light mode" : "Dark mode"}</TooltipLabel>
+          <TooltipLabel>{isDark ? t("nav.light") : t("nav.dark")}</TooltipLabel>
         </button>
         <button
           type="button"
-          aria-label={`Change language to ${language === "EN" ? "Arabic" : "English"}`}
-          onClick={() => setLanguage((value) => (value === "EN" ? "AR" : "EN"))}
+          aria-label={isArabic ? t("nav.toEnglish") : t("nav.toArabic")}
+          onClick={switchLanguage}
           data-dock-item
           className="group relative flex h-10 shrink-0 origin-center touch-manipulation select-none items-center justify-center gap-1 rounded-[14px] border border-neutral-800 bg-[#181818] px-2.5 text-[#F5F5F5] shadow-none transition-all duration-150 ease-out will-change-transform [-webkit-tap-highlight-color:transparent] active:scale-95 [@media(hover:hover)]:hover:bg-[#222222] active:bg-[#262626] focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white motion-reduce:transition-none sm:h-11 sm:px-3 dark:border-neutral-200/90 dark:bg-white dark:text-[#111111] dark:shadow-[0_1px_3px_rgba(0,0,0,0.04)] [@media(hover:hover)]:dark:hover:bg-neutral-50 dark:focus-visible:outline-[#111111]">
           <Globe2
@@ -437,9 +448,9 @@ export default function Navbar() {
             strokeWidth={1.8}
           />
           <span className="font-geist-mono text-xs font-bold uppercase leading-none tracking-tight">
-            {language === "EN" ? "AR" : "EN"}
+            {isArabic ? "EN" : "ع"}
           </span>
-          <TooltipLabel>Language: {language}</TooltipLabel>
+          <TooltipLabel>{t("nav.language")}</TooltipLabel>
         </button>
       </nav>
     </>

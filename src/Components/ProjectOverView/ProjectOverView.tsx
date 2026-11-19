@@ -1,6 +1,8 @@
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router";
 import type { Project } from "../Carousel/Carousel";
+import { useTranslation } from "react-i18next";
+import { localizeProject } from "../../i18n/localizeProject";
 
 type ProjectOverViewProps = {
   project: Project;
@@ -11,6 +13,8 @@ export default function ProjectOverView({
   project,
   onViewDetails,
 }: ProjectOverViewProps) {
+  const { t } = useTranslation();
+  const localized = localizeProject(project, t);
   return (
     <div className="mt-8 sm:mt-9">
       <article
@@ -29,16 +33,15 @@ export default function ProjectOverView({
 
         <div className="relative z-10">
           <h3 className="font-[Bebas_Neue] text-2xl uppercase leading-none tracking-wide text-[#111111] dark:text-[#F5F5F5] sm:text-[28px]">
-            {project.name}
+            {localized.name}
           </h3>
           <p className="mt-1 max-w-3xl text-sm leading-6 text-[#666] dark:text-neutral-400 font-normal sm:leading-7">
-            {project.description ??
-              "Explore this project and its responsive interface."}
+            {localized.description ?? t("overview.fallback")}
           </p>
 
           {project.technologies?.length ? (
             <ul
-              aria-label="Technologies used"
+              aria-label={t("overview.technologies")}
               className="mt-4 flex flex-wrap gap-2">
               {project.technologies.map((technology) => (
                 <li
@@ -55,14 +58,14 @@ export default function ProjectOverView({
               type="button"
               onClick={() => onViewDetails(project)}
               className="mt-5 inline-flex min-h-10 items-center gap-2 font-[Bebas_Neue] text-base tracking-wide text-[#111111] dark:text-[#F5F5F5] transition-colors hover:text-neutral-500 dark:hover:text-neutral-300 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#111111] dark:focus-visible:outline-white sm:mt-6 sm:text-lg cursor-pointer">
-              View details
+              {t("overview.viewDetails")}
               <ArrowRight aria-hidden="true" className="size-4" />
             </button>
           ) : project.details ? (
             <Link
               to={project.details}
               className="mt-5 inline-flex min-h-10 items-center gap-2 font-[Bebas_Neue] text-base tracking-wide text-[#111111] dark:text-[#F5F5F5] transition-colors hover:text-neutral-500 dark:hover:text-neutral-300 focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#111111] dark:focus-visible:outline-white sm:mt-6 sm:text-lg">
-              View details
+              {t("overview.viewDetails")}
               <ArrowRight aria-hidden="true" className="size-4" />
             </Link>
           ) : null}
@@ -73,7 +76,7 @@ export default function ProjectOverView({
         <Link
           to="/Projects"
           className="inline-flex py-3 px-6 items-center justify-center rounded-full bg-[#111111] dark:bg-white text-sm font-semibold text-white dark:text-[#111111] transition-transform duration-200 hover:scale-[1.03] dark:hover:bg-neutral-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#111111] dark:focus-visible:outline-white active:scale-[0.98] motion-reduce:transition-none sm:min-h-14 sm:px-8 sm:text-base">
-          See More Projects
+          {t("overview.more")}
         </Link>
       </div>
     </div>

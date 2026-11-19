@@ -1,6 +1,7 @@
 import {
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState,
   type ReactNode,
@@ -10,8 +11,10 @@ import type { EmblaCarouselType, EmblaEventType } from "embla-carousel";
 import { ChevronLeft, ChevronRight, ExternalLink, Eye } from "lucide-react";
 
 import { PROJECTS_DATA, type ProjectItem } from "../../data/projectsData";
+import { useTranslation } from "react-i18next";
+import { localizeProject } from "../../i18n/localizeProject";
 
-export type Project = ProjectItem & {
+export type Project = Omit<ProjectItem, "category"> & { category: string } & {
   details?: string;
 };
 
@@ -207,6 +210,7 @@ function ProjectOverlay({
   onDismiss?: () => void;
   onViewDetails?: (project: Project) => void;
 }) {
+  const { t } = useTranslation();
   // Only the focused (center) card is interactive; side cards stay inert.
   // On desktop: revealed on hover via group-hover/media classes.
   // On touch: revealed only when user taps the active card.
@@ -235,7 +239,7 @@ function ProjectOverlay({
       className={`absolute inset-0 flex justify-center gap-2 ring-1 ring-inset ring-white/10 transition-opacity duration-500 ${EASE} motion-reduce:transition-none sm:gap-3 ${container}`}>
       <div className={`${itemBase} ${item(0)}`}>
         <OverlayAction
-          label="View Details"
+          label={t("projectsPage.viewDetails")}
           labelMode="sm"
           icon={<Eye aria-hidden="true" className="size-4 sm:size-[18px]" />}
           tabIndex={tabIndex}
@@ -258,7 +262,7 @@ function ProjectOverlay({
 
       <div className={`${itemBase} ${item(1)}`}>
         <OverlayAction
-          label="Live Demo"
+          label={t("projectsPage.liveDemo")}
           labelMode="always"
           icon={
             <ExternalLink
@@ -297,6 +301,12 @@ export default function Carousel({
   onViewDetails?: (project: Project) => void;
   onProjectChange?: (project: Project) => void;
 }) {
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.dir() === "rtl";
+  const displayProjects = useMemo(
+    () => projects.map((project) => localizeProject(project, t)),
+    [t],
+  );
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [touchRevealed, setTouchRevealed] = useState<string | null>(null);
   const pointerStartRef = useRef<{ x: number; y: number } | null>(null);
@@ -304,6 +314,7 @@ export default function Carousel({
   const tweenNodes = useRef<(TweenItem | null)[]>([]);
   const [viewportRef, emblaApi] = useEmblaCarousel({
     align: "center",
+    direction: isRTL ? "rtl" : "ltr",
     containScroll: false,
     loop: true,
     slidesToScroll: 1,
@@ -365,8 +376,8 @@ export default function Carousel({
   }, [canHover, touchRevealed]);
 
   useEffect(() => {
-    onProjectChange?.(projects[selectedIndex]);
-  }, [onProjectChange, selectedIndex]);
+    onProjectChange?.(displayProjects[selectedIndex]);
+  }, [displayProjects, onProjectChange, selectedIndex]);
 
   const setTweenNodes = useCallback((api: EmblaCarouselType) => {
     // Keep one entry per slide (null if missing) so indexes stay aligned.
@@ -425,7 +436,10 @@ export default function Carousel({
           // Embla mis-measures on the first slide). Neighbours slide inward
           // behind the center card, easing back to 0 as they become active.
           const shift = clamp(diffToTarget * tweenFactor, -1, 1);
-          item.card.style.transform = `translateX(calc(var(--overlap) * ${(-shift).toFixed(3)})) scale(${scale.toFixed(3)})`;
+          // The flex track is reversed in RTL, so the physical X shift must
+          // reverse too or side cards move away from the active card.
+          const horizontalShift = shift * (isRTL ? 1 : -1);
+          item.card.style.transform = `translateX(calc(var(--overlap) * ${horizontalShift.toFixed(3)})) scale(${scale.toFixed(3)})`;
           // Dark overlay fades out as the card approaches the center.
           item.overlay.style.opacity = ((1 - tweenValue) * MAX_DIM).toFixed(3);
           item.caption.style.opacity = (0.4 + 0.6 * tweenValue).toFixed(3);
@@ -436,7 +450,7 @@ export default function Carousel({
         });
       });
     },
-    [],
+    [isRTL],
   );
 
   useEffect(() => {
@@ -470,18 +484,18 @@ export default function Carousel({
     <section
       role="region"
       aria-roledescription="carousel"
-      aria-label="Featured projects"
+      aria-label={t("featured.title")}
       className="relative">
       <div
         ref={viewportRef}
         className="relative overflow-hidden px-1 py-10 sm:px-2 sm:py-12">
         <div className="flex touch-pan-y touch-pinch-zoom items-center">
-          {projects.map((project, index) => (
+          {displayProjects.map((project, index) => (
             <div
               key={project.name}
               role="group"
               aria-roledescription="slide"
-              aria-label={`${index + 1} of ${projects.length}: ${project.name}`}
+              aria-label={`${index + 1} / ${displayProjects.length}: ${project.name}`}
               /* CHANGED: wider slides + negative left margin so neighbours
                  overlap and only a strip of each side card peeks out.
                  `relative` lets the slide carry the z-index. */
@@ -536,38 +550,38 @@ export default function Carousel({
         </div>
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-y-10 left-0 z-[150] w-3 rounded-r-full bg-gradient-to-r from-[#fafafa]/50 dark:from-[#0A0A0A]/60 via-[#fafafa]/35 dark:via-[#0A0A0A]/30 to-transparent sm:inset-y-12"
+          className="pointer-events-none absolute inset-y-10 start-0 z-[150] w-3 rounded-e-full bg-gradient-to-r rtl:bg-gradient-to-l from-[#fafafa]/50 dark:from-[#0A0A0A]/60 via-[#fafafa]/35 dark:via-[#0A0A0A]/30 to-transparent sm:inset-y-12"
         />
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-y-10 right-0 z-[150] w-3 rounded-l-full bg-gradient-to-l from-[#fafafa]/50 dark:from-[#0A0A0A]/60 via-[#fafafa]/35 dark:via-[#0A0A0A]/30 to-transparent sm:inset-y-12"
+          className="pointer-events-none absolute inset-y-10 end-0 z-[150] w-3 rounded-s-full bg-gradient-to-l rtl:bg-gradient-to-r from-[#fafafa]/50 dark:from-[#0A0A0A]/60 via-[#fafafa]/35 dark:via-[#0A0A0A]/30 to-transparent sm:inset-y-12"
         />
       </div>
 
       <button
         type="button"
-        aria-label="Show previous project"
+        aria-label={t("projectsPage.previousLabel")}
         onClick={() => emblaApi?.scrollPrev(prefersReducedMotion())}
-        className="absolute left-2 top-[45%] z-[200] grid size-10 -translate-y-1/2 place-items-center rounded-full border border-neutral-200 dark:border-neutral-800 bg-white/95 dark:bg-[#181818]/95 text-[#111111] dark:text-[#F5F5F5] shadow-md transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-105 hover:shadow-lg active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111111] dark:focus-visible:outline-white sm:left-4 sm:size-12 motion-reduce:transition-none">
-        <ChevronLeft aria-hidden="true" className="size-5 sm:size-6" />
+        className="absolute start-2 top-[45%] z-[200] grid size-10 -translate-y-1/2 place-items-center rounded-full border border-neutral-200 dark:border-neutral-800 bg-white/95 dark:bg-[#181818]/95 text-[#111111] dark:text-[#F5F5F5] shadow-md transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-105 hover:shadow-lg active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111111] dark:focus-visible:outline-white sm:start-4 sm:size-12 motion-reduce:transition-none">
+        <ChevronLeft aria-hidden="true" className="size-5 sm:size-6 rtl:rotate-180" />
       </button>
       <button
         type="button"
-        aria-label="Show next project"
+        aria-label={t("projectsPage.nextLabel")}
         onClick={() => emblaApi?.scrollNext(prefersReducedMotion())}
-        className="absolute right-2 top-[45%] z-[200] grid size-10 -translate-y-1/2 place-items-center rounded-full border border-neutral-200 dark:border-neutral-800 bg-white/95 dark:bg-[#181818]/95 text-[#111111] dark:text-[#F5F5F5] shadow-md transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-105 hover:shadow-lg active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111111] dark:focus-visible:outline-white sm:right-4 sm:size-12 motion-reduce:transition-none">
-        <ChevronRight aria-hidden="true" className="size-5 sm:size-6" />
+        className="absolute end-2 top-[45%] z-[200] grid size-10 -translate-y-1/2 place-items-center rounded-full border border-neutral-200 dark:border-neutral-800 bg-white/95 dark:bg-[#181818]/95 text-[#111111] dark:text-[#F5F5F5] shadow-md transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-105 hover:shadow-lg active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111111] dark:focus-visible:outline-white sm:end-4 sm:size-12 motion-reduce:transition-none">
+        <ChevronRight aria-hidden="true" className="size-5 sm:size-6 rtl:rotate-180" />
       </button>
 
       <div
         role="group"
-        aria-label="Choose project"
+        aria-label={t("carousel.choose")}
         className="mt-1 flex justify-center gap-2">
-        {projects.map((project, index) => (
+        {displayProjects.map((project, index) => (
           <button
             key={project.name}
             type="button"
-            aria-label={`Go to ${project.name}`}
+            aria-label={t("carousel.goTo", { name: project.name })}
             aria-current={selectedIndex === index ? "true" : undefined}
             onClick={() => scrollTo(index)}
             className={`h-2 rounded-full transition-[width,background-color] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111111] dark:focus-visible:outline-white motion-reduce:transition-none ${
@@ -580,7 +594,7 @@ export default function Carousel({
       </div>
 
       <p className="mt-3 text-center text-sm text-neutral-500 dark:text-neutral-400">
-        Drag or swipe to browse projects
+        {t("carousel.hint")}
       </p>
     </section>
   );

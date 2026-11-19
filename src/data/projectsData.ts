@@ -1,19 +1,21 @@
-import mavic from "../assets/1-MavicPro.png";
+import mavic from "../assets/1-MavicPro.jpg";
 import uxReview from "../assets/2-UXReview.svg";
-import mudaber from "../assets/3-mudaber.png";
-import clarity from "../assets/4-Clarity.png";
-import gameArena from "../assets/5-GameArena.png";
+import mudaber from "../assets/3-mudaber.jpg";
+import clarity from "../assets/4-Clarity.jpg";
+import gameArena from "../assets/5-GameArena.avif";
 import contactHub from "../assets/6-ContactHub.svg";
-import portfolio from "../assets/7-portfolio.jpg";
-import cosmos from "../assets/8-COSMOS.png.jpg";
-import quizApp from "../assets/9-QuizApp.png";
-import cineVerse from "../assets/10-CineVerse.png";
+import portfolio from "../assets/7-portfolio.avif";
+import cosmos from "../assets/8-COSMOS.avif";
+import quizApp from "../assets/9-QuizApp.avif";
+import cineVerse from "../assets/10-CineVerse.avif";
 import socialApp from "../assets/11-SocialApp.svg";
 import audioGuard from "../assets/12-AudioGuard.svg";
-import currentPortfolio from "../assets/13-CurrentPortfolio.png";
+import currentPortfolio from "../assets/13-CurrentPortfolio.avif";
+import freshCart from "../assets/14-FreshCart.avif";
 
 export type Category =
   | "All"
+  | "E-commerce Projects"
   | "Web Applications"
   | "Landing Pages"
   | "Education & Learning"
@@ -35,6 +37,44 @@ export type ProjectItem = {
 };
 
 export const PROJECTS_DATA: ProjectItem[] = [
+  {
+    id: "freshcart",
+    name: "FreshCart",
+    category: "E-commerce Projects",
+    badge: "Online Store",
+    image: freshCart,
+    description:
+      "A full-featured online store for discovering products, managing a cart and wishlist, and placing orders.",
+    longDescription:
+      "FreshCart is a responsive e-commerce application built with Next.js and TypeScript. Shoppers can browse products, categories, and brands; search the catalog; manage a cart and wishlist; complete cash-on-delivery checkout; and review their orders. The application also includes account registration and login, password recovery, profile settings, and address management.",
+    technologies: [
+      "Next.js",
+      "React",
+      "TypeScript",
+      "Tailwind CSS",
+      "Redux Toolkit",
+      "React Redux",
+      "TanStack Query",
+      "Axios",
+      "React Hook Form",
+      "Zod",
+      "Motion",
+      "Swiper",
+      "React Image Gallery",
+      "Sonner",
+      "Tabler Icons",
+    ],
+    highlights: [
+      "Product catalog with product details, categories, brands, and search",
+      "Cart and wishlist management with server data powered by TanStack Query",
+      "Validated cash-on-delivery checkout with shipping address entry",
+      "Account flows for sign up, sign in, password recovery, and reset",
+      "Profile settings, address management, and order history",
+      "Responsive interface with animated interactions and loading, error, and empty states",
+    ],
+    demo: "https://fresh-cart-e-commerce-rho.vercel.app/",
+    github: "https://github.com/MohamedOsama1907/Fresh-Cart-e-commerce-",
+  },
   {
     id: "cineverse",
     name: "CineVerse",
@@ -352,6 +392,7 @@ export const PROJECTS_DATA: ProjectItem[] = [
 ];
 
 const PROJECT_ORDER = [
+  "freshcart",
   "social-app",
   "current-portfolio",
   "quiz-app",

@@ -4,12 +4,16 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/public/mohamedDark.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mohamed Osama</title>
+    <meta name="description" content="Mohamed Osama's frontend development portfolio, projects, skills, experience, and contact information." />
+    <title>Mohamed Osama | Frontend Developer</title>
     <script>
       (function () {
         try {
-          var theme = localStorage.getItem("theme");
-          if (theme === "dark") {
+          var saved = localStorage.getItem("theme");
+          var prefersDark =
+            window.matchMedia &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches;
+          if (saved === "dark" || (saved !== "light" && prefersDark)) {
             document.documentElement.classList.add("dark");
           } else {
             document.documentElement.classList.remove("dark");

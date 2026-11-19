@@ -12,6 +12,7 @@ import type { SubmitHandler } from "react-hook-form";
 import z from "zod";
 import { toast } from "sonner";
 import emailjs from "@emailjs/browser";
+import { useTranslation } from "react-i18next";
 const contactCards = [
   {
     label: "Email",
@@ -66,13 +67,14 @@ const socialLinks = [
   },
 ];
 export default function Contact() {
+  const { t } = useTranslation();
   const signupSchema = z.object({
-    name: z.string().min(1, { error: "Please enter your name." }),
+    name: z.string().min(1, { error: t("contact.validationName") }),
     email: z
-      .email({ error: "Please enter a valid email." })
-      .min(1, { error: " Please enter your email." }),
-    subject: z.string().min(1, { error: "Please enter a subject." }),
-    message: z.string().min(1, { error: "Tell me a bit about your project." }),
+      .email({ error: t("contact.validationEmail") })
+      .min(1, { error: t("contact.validationEmail") }),
+    subject: z.string().min(1, { error: t("contact.validationSubject") }),
+    message: z.string().min(1, { error: t("contact.validationMessage") }),
   });
   type ContactFormData = z.infer<typeof signupSchema>;
 
@@ -101,11 +103,9 @@ export default function Contact() {
       await emailjs.send(servicesid, templaetid, templateParams, {
         publicKey,
       });
-      toast.success(
-        "Your message was sent successfully. I'll get back to you soon.",
-      );
+      toast.success(t("contact.success"));
     } catch {
-      toast.error("Your message could not be sent. Please try again.");
+      toast.error(t("contact.error"));
     }
   };
   return (
@@ -116,11 +116,10 @@ export default function Contact() {
       <h2
         id="contact-title"
         className="font-[Bebas_Neue] text-[29px] uppercase leading-none text-[#111111] dark:text-[#F5F5F5] sm:text-[48px]">
-        Get in touch
+        {t("contact.title")}
       </h2>
       <p className="mt-4 max-w-2xl text-sm leading-6 text-neutral-500 dark:text-neutral-400 sm:mt-5 sm:text-base sm:leading-7">
-        Have a project in mind? Reach me directly or send a message and I'll
-        reply fast.
+        {t("contact.intro")}
       </p>
 
       {/* Two-column layout */}
@@ -140,7 +139,7 @@ export default function Contact() {
                   ? undefined
                   : "noreferrer"
               }
-              className="group flex min-w-0 items-center gap-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#141414] px-4 py-4 transition-all duration-300 ease-out hover:translate-x-1.5 hover:border-neutral-300 dark:hover:border-neutral-700 hover:bg-white dark:hover:bg-[#181818] hover:shadow-[0_4px_14px_rgba(17,17,17,0.06)] dark:hover:shadow-[0_4px_14px_rgba(0,0,0,0.3)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111111] dark:focus-visible:outline-white motion-reduce:transition-none sm:px-5">
+              className="group flex min-w-0 items-center gap-4 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#141414] px-4 py-4 transition-all duration-300 ease-out hover:translate-x-1.5 rtl:hover:-translate-x-1.5 hover:border-neutral-300 dark:hover:border-neutral-700 hover:bg-white dark:hover:bg-[#181818] hover:shadow-[0_4px_14px_rgba(17,17,17,0.06)] dark:hover:shadow-[0_4px_14px_rgba(0,0,0,0.3)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111111] dark:focus-visible:outline-white motion-reduce:transition-none sm:px-5">
               <span
                 aria-hidden="true"
                 className="grid size-11 shrink-0 place-items-center rounded-xl border border-neutral-200 dark:border-neutral-800 bg-[#fafafa] dark:bg-[#1c1c1c] text-neutral-600 dark:text-neutral-400 transition-colors duration-200 group-hover:text-[#111111] dark:group-hover:text-[#F5F5F5] motion-reduce:transition-none">
@@ -152,9 +151,9 @@ export default function Contact() {
               </span>
               <div className="min-w-0">
                 <p className="text-sm font-semibold text-[#111111] dark:text-[#F5F5F5]">
-                  {label}
+                  {t(`contact.${({ Email: "email", WhatsApp: "whatsapp", Telegram: "telegram", "Call me": "call" } as const)[label]}`)}
                 </p>
-                <p className="mt-0.5 truncate text-xs text-neutral-500 dark:text-neutral-400">
+                <p dir="ltr" className="mt-0.5 truncate text-xs text-neutral-500 dark:text-neutral-400">
                   {value}
                 </p>
               </div>
@@ -167,10 +166,10 @@ export default function Contact() {
           {/* Find me online */}
           <div className="mt-3">
             <p className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
-              Find me online
+              {t("contact.findOnline")}
             </p>
             <nav
-              aria-label="Social media links"
+              aria-label={t("contact.social")}
               className="mt-3 flex items-center gap-2">
               {socialLinks.map(({ label, href, Icon }) => (
                 <a
@@ -196,18 +195,18 @@ export default function Contact() {
               <label
                 htmlFor="contact-name"
                 className="mb-2 block text-sm font-semibold text-[#111111] dark:text-[#F5F5F5]">
-                Your name
+                {t("contact.yourName")}
               </label>
               <input
                 id="contact-name"
                 type="text"
-                placeholder="Enter your name"
+                placeholder={t("contact.namePlaceholder")}
                 {...register("name")}
                 className="w-full rounded-xl border border-neutral-200 dark:border-neutral-800 bg-[#fafafa] dark:bg-[#1c1c1c] px-4 py-3 text-sm text-[#111111] dark:text-[#F5F5F5] placeholder:text-neutral-400 dark:placeholder:text-neutral-500 transition-colors duration-200 focus:border-neutral-400 dark:focus:border-neutral-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#111111]/20 dark:focus-visible:ring-white/20 motion-reduce:transition-none"
               />
               {formState.errors.name ? (
                 <p className=" text-[13px] text-[#dc2626] bg-transparent mt-1">
-                  *{formState.errors.name.message}
+                  *{t("contact.validationName")}
                 </p>
               ) : (
                 ""
@@ -218,18 +217,19 @@ export default function Contact() {
               <label
                 htmlFor="contact-email"
                 className="mb-2 block text-sm font-semibold text-[#111111] dark:text-[#F5F5F5]">
-                Email
+                {t("contact.emailLabel")}
               </label>
               <input
                 id="contact-email"
+                dir="ltr"
                 type="email"
-                placeholder="you@example.com"
+                placeholder={t("contact.emailPlaceholder")}
                 {...register("email")}
                 className="w-full rounded-xl border border-neutral-200 dark:border-neutral-800 bg-[#fafafa] dark:bg-[#1c1c1c] px-4 py-3 text-sm text-[#111111] dark:text-[#F5F5F5] placeholder:text-neutral-400 dark:placeholder:text-neutral-500 transition-colors duration-200 focus:border-neutral-400 dark:focus:border-neutral-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#111111]/20 dark:focus-visible:ring-white/20 motion-reduce:transition-none"
               />
               {formState.errors.email ? (
                 <p className=" text-[13px] text-[#dc2626] bg-transparent mt-1">
-                  *{formState.errors.email.message}
+                  *{t("contact.validationEmail")}
                 </p>
               ) : (
                 ""
@@ -240,18 +240,18 @@ export default function Contact() {
               <label
                 htmlFor="contact-subject"
                 className="mb-2 block text-sm font-semibold text-[#111111] dark:text-[#F5F5F5]">
-                Subject
+                {t("contact.subject")}
               </label>
               <input
                 id="contact-subject"
                 type="text"
-                placeholder="Project inquiry"
+                placeholder={t("contact.subjectPlaceholder")}
                 {...register("subject")}
                 className="w-full rounded-xl border border-neutral-200 dark:border-neutral-800 bg-[#fafafa] dark:bg-[#1c1c1c] px-4 py-3 text-sm text-[#111111] dark:text-[#F5F5F5] placeholder:text-neutral-400 dark:placeholder:text-neutral-500 transition-colors duration-200 focus:border-neutral-400 dark:focus:border-neutral-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#111111]/20 dark:focus-visible:ring-white/20 motion-reduce:transition-none"
               />
               {formState.errors.subject ? (
                 <p className=" text-[13px] text-[#dc2626] bg-transparent mt-1">
-                  *{formState.errors.subject.message}
+                  *{t("contact.validationSubject")}
                 </p>
               ) : (
                 ""
@@ -262,18 +262,18 @@ export default function Contact() {
               <label
                 htmlFor="contact-message"
                 className="mb-2 block text-sm font-semibold text-[#111111] dark:text-[#F5F5F5]">
-                Message
+                {t("contact.message")}
               </label>
               <textarea
                 id="contact-message"
-                placeholder="Tell me about your project..."
+                placeholder={t("contact.messagePlaceholder")}
                 {...register("message")}
                 rows={5}
                 className="w-full resize-y rounded-xl border border-neutral-200 dark:border-neutral-800 bg-[#fafafa] dark:bg-[#1c1c1c] px-4 py-3 text-sm text-[#111111] dark:text-[#F5F5F5] placeholder:text-neutral-400 dark:placeholder:text-neutral-500 transition-colors duration-200 focus:border-neutral-400 dark:focus:border-neutral-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#111111]/20 dark:focus-visible:ring-white/20 motion-reduce:transition-none"
               />
               {formState.errors.message ? (
                 <p className=" text-[13px] text-[#dc2626] bg-transparent mt-1">
-                  *{formState.errors.message.message}
+                  *{t("contact.validationMessage")}
                 </p>
               ) : (
                 ""
@@ -283,7 +283,7 @@ export default function Contact() {
             <button
               type="submit"
               className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-[#111111] dark:bg-white py-3.5 text-[15px] font-semibold text-white dark:text-[#111111] transition-[background-color,box-shadow] duration-200 hover:bg-neutral-800 dark:hover:bg-neutral-200 hover:shadow-[0_4px_14px_rgba(17,17,17,0.16)] dark:hover:shadow-[0_4px_14px_rgba(255,255,255,0.12)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111111] dark:focus-visible:outline-white motion-reduce:transition-none">
-              {formState.isSubmitting ? "Sending..." : "Send message"}
+              {formState.isSubmitting ? t("contact.sending") : t("contact.send")}
               <Send aria-hidden="true" className="size-4" />
             </button>
           </form>

@@ -32,6 +32,35 @@ body {
   transition: background-color 0.25s ease, color 0.25s ease;
 }
 
+html[lang="ar"] body {
+  font-family: Tahoma, Arial, sans-serif;
+  line-height: 1.75;
+}
+
+html[lang="ar"] h1,
+html[lang="ar"] h2,
+html[lang="ar"] h3,
+html[lang="ar"] h4,
+html[lang="ar"] h5,
+html[lang="ar"] h6 {
+  font-family: Tahoma, Arial, sans-serif;
+  letter-spacing: 0;
+  line-height: 1.35;
+}
+
+html[lang="ar"] .font-geist-mono {
+  font-family: Tahoma, Arial, sans-serif;
+  letter-spacing: 0;
+}
+
+html[lang="ar"] :where(button, a, label) {
+  line-height: 1.5;
+}
+
+html[lang="ar"] :where(*) {
+  letter-spacing: normal;
+}
+
 html.dark body,
 :where(.dark) body {
   background-color: #0A0A0A;

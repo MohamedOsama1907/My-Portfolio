@@ -1,4 +1,6 @@
 import { useEffect, useId } from "react";
+import { useTranslation } from "react-i18next";
+import { localizeProject } from "../../i18n/localizeProject";
 import { ExternalLink, X } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
 import type { ProjectItem } from "../../data/projectsData";
@@ -9,6 +11,7 @@ export type ProjectModalProps = {
 };
 
 export default function ProjectModal({ project, onClose }: ProjectModalProps) {
+  const { t } = useTranslation();
   const modalTitleId = useId();
   const modalDescriptionId = useId();
 
@@ -33,6 +36,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
   }, [project, onClose]);
 
   if (!project) return null;
+  const localized = localizeProject(project, t);
 
   return (
     <div
@@ -62,14 +66,14 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
         <div className="relative aspect-[16/9] w-full overflow-hidden bg-neutral-100 dark:bg-[#181818]">
           <img
             src={project.image}
-            alt={project.name}
+            alt={localized.name}
             className="size-full object-cover object-top"
           />
           <button
             type="button"
-            aria-label="Close modal"
+            aria-label={t("modal.close")}
             onClick={onClose}
-            className="absolute right-4 top-4 grid size-9 place-items-center rounded-full border border-black/10 bg-white/90 text-[#111111] shadow-md backdrop-blur-md transition-transform hover:scale-105 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111111] dark:border-white/10 dark:bg-black/90 dark:text-[#F5F5F5] dark:focus-visible:outline-white">
+            className="absolute end-4 top-4 grid size-9 place-items-center rounded-full border border-black/10 bg-white/90 text-[#111111] shadow-md backdrop-blur-md transition-transform hover:scale-105 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111111] dark:border-white/10 dark:bg-black/90 dark:text-[#F5F5F5] dark:focus-visible:outline-white">
             <X className="size-4" aria-hidden="true" />
           </button>
         </div>
@@ -78,27 +82,27 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
         <div className="relative z-10 p-6 sm:p-8">
           {/* Category / Label */}
           <p className="text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 sm:text-sm">
-            {project.category}
+            {localized.category}
           </p>
 
           {/* Project Title */}
           <h3
             id={modalTitleId}
             className="mt-1 font-[Bebas_Neue] text-3xl uppercase tracking-wide text-[#111111] dark:text-[#F5F5F5] sm:text-4xl md:text-[42px] leading-tight">
-            {project.name}
+            {localized.name}
           </h3>
 
           {/* Introductory Description */}
           <p
             id={modalDescriptionId}
             className="mt-3 text-sm leading-relaxed text-neutral-600 dark:text-neutral-300 sm:text-[15px]">
-            {project.longDescription || project.description}
+            {localized.longDescription || localized.description}
           </p>
 
           {/* Tech Stack Section */}
           <div className="mt-7">
             <h4 className="font-[Bebas_Neue] text-lg uppercase tracking-wider text-[#111111] dark:text-[#F5F5F5] sm:text-xl">
-              Tech Stack
+              {t("modal.tech")}
             </h4>
             <div className="mt-2.5 flex flex-wrap gap-2">
               {project.technologies.map((tech) => (
@@ -115,7 +119,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
           {project.highlights?.length ? (
             <div className="mt-7">
               <h4 className="font-[Bebas_Neue] text-lg uppercase tracking-wider text-[#111111] dark:text-[#F5F5F5] sm:text-xl">
-                Overview
+                {t("modal.overview")}
               </h4>
               <ul className="mt-3 space-y-2.5 text-sm leading-relaxed text-neutral-600 dark:text-neutral-300 sm:text-[15px]">
                 {project.highlights.map((point, index) => (
@@ -139,7 +143,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-full bg-[#111111] px-6 py-3 text-sm font-semibold text-white shadow-sm transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111111] dark:bg-white dark:text-[#111111] dark:focus-visible:outline-white">
-                <span>Open Live Demo</span>
+                <span>{t("modal.live")}</span>
                 <ExternalLink className="size-4" aria-hidden="true" />
               </a>
             )}
@@ -150,7 +154,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-full border border-neutral-200/90 bg-white px-6 py-3 text-sm font-semibold text-[#111111] transition-transform hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111111] dark:border-neutral-800 dark:bg-[#181818] dark:text-[#F5F5F5] dark:focus-visible:outline-white">
                 <FaGithub className="size-4" aria-hidden="true" />
-                <span>View GitHub Repo</span>
+                <span>{t("modal.github")}</span>
               </a>
             )}
           </div>

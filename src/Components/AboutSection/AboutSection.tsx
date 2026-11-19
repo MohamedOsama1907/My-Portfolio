@@ -9,10 +9,12 @@ import {
 } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useTranslation } from "react-i18next";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function AboutSection() {
+  const { t } = useTranslation();
   const sectionRef = useRef<HTMLElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const headingWordsRef = useRef<HTMLHeadingElement>(null);
@@ -107,7 +109,7 @@ export default function AboutSection() {
         className="font-[Bebas_Neue] text-[29px] uppercase leading-none text-[#111111] dark:text-[#F5F5F5] sm:text-[36px]"
       >
         <span className="inline-block overflow-hidden py-1">
-          <span className="about-heading-word inline-block">About Me</span>
+          <span className="about-heading-word inline-block">{t("about.title")}</span>
         </span>
       </h2>
 
@@ -141,33 +143,22 @@ export default function AboutSection() {
               </span>
               <div>
                 <p className="font-[Bebas_Neue] text-[20px] uppercase leading-none tracking-wide text-[#111111] dark:text-[#F5F5F5] sm:text-[24px]">
-                  Frontend Engineering & UX Design
+                  {t("about.role")}
                 </p>
                 <p className="mt-1 text-xs text-neutral-500 dark:text-neutral-400 sm:text-sm">
-                  Responsive Web Applications · User-Centered Design
+                  {t("about.disciplines")}
                 </p>
               </div>
             </div>
 
             {/* Paragraph 1 */}
             <p className="about-reveal text-[15px] leading-relaxed text-neutral-600 dark:text-neutral-400 sm:text-[16px] sm:leading-loose">
-              I&apos;m a{" "}
-              <span className="font-semibold text-[#111111] dark:text-[#F5F5F5]">
-                Frontend Developer
-              </span>{" "}
-              focused on creating modern, responsive, and user-friendly web
-              experiences. I pay close attention to visual design, thoughtful
-              color choices, and building interfaces that work smoothly across
-              different screen sizes.
+              {t("about.p1")}
             </p>
 
             {/* Paragraph 2 */}
             <p className="about-reveal text-[15px] leading-relaxed text-neutral-600 dark:text-neutral-400 sm:text-[16px] sm:leading-loose">
-              I care about more than just how a website looks. I also focus on{" "}
-              <span className="font-semibold text-[#111111] dark:text-[#F5F5F5]">code quality</span>
-              ,{" "}
-              <span className="font-semibold text-[#111111] dark:text-[#F5F5F5]">performance</span>,
-              and solving real user problems through technology.
+              {t("about.p2")}
             </p>
 
             {/* Core Values highlight row */}
@@ -178,7 +169,7 @@ export default function AboutSection() {
                   strokeWidth={1.8}
                 />
                 <span className="mt-1.5 block font-[Bebas_Neue] text-[13px] uppercase tracking-wider text-[#111111] dark:text-[#F5F5F5] sm:text-sm">
-                  Attention to Detail
+                  {t("about.detail")}
                 </span>
               </div>
               <div className="rounded-xl border border-neutral-200/80 dark:border-neutral-800 bg-[#fafafa] dark:bg-[#181818] p-3 text-center sm:p-3.5">
@@ -187,7 +178,7 @@ export default function AboutSection() {
                   strokeWidth={1.8}
                 />
                 <span className="mt-1.5 block font-[Bebas_Neue] text-[13px] uppercase tracking-wider text-[#111111] dark:text-[#F5F5F5] sm:text-sm">
-                  Clean Architecture
+                  {t("about.architecture")}
                 </span>
               </div>
               <div className="col-span-2 rounded-xl border border-neutral-200/80 dark:border-neutral-800 bg-[#fafafa] dark:bg-[#181818] p-3 text-center sm:col-span-1 sm:p-3.5">
@@ -196,7 +187,7 @@ export default function AboutSection() {
                   strokeWidth={1.8}
                 />
                 <span className="mt-1.5 block font-[Bebas_Neue] text-[13px] uppercase tracking-wider text-[#111111] dark:text-[#F5F5F5] sm:text-sm">
-                  User First
+                  {t("about.userFirst")}
                 </span>
               </div>
             </div>
@@ -209,22 +200,18 @@ export default function AboutSection() {
               <div className="flex items-center gap-2.5">
                 <Terminal className="size-4 text-neutral-400" strokeWidth={2} />
                 <h3 className="font-[Bebas_Neue] text-lg uppercase tracking-wide text-[#111111] dark:text-[#F5F5F5]">
-                  Hands-on Experience
+                  {t("about.handsOn")}
                 </h3>
               </div>
               <p className="mt-3 text-[14px] leading-relaxed text-neutral-600 dark:text-neutral-400 sm:text-[15px]">
-                Through personal projects like{" "}
-                <span className="font-semibold text-[#111111] dark:text-[#F5F5F5]">FreshCart</span>,
-                a feature-rich e-commerce platform, and a social app with a
-                variety of features, I&apos;ve worked on building frontend
-                experiences and integrating them with APIs and backend services.
+                {t("about.examples")}
               </p>
               <div className="mt-4 flex flex-wrap gap-2">
                 <span className="about-chip rounded-full border border-neutral-200 dark:border-neutral-700/60 bg-white dark:bg-[#222222] px-3 py-1 font-[Bebas_Neue] text-[12px] uppercase tracking-wide text-neutral-600 dark:text-neutral-300 sm:text-[13px]">
-                  FreshCart E-Commerce
+                  {t("about.freshcartTag")}
                 </span>
                 <span className="about-chip rounded-full border border-neutral-200 dark:border-neutral-700/60 bg-white dark:bg-[#222222] px-3 py-1 font-[Bebas_Neue] text-[12px] uppercase tracking-wide text-neutral-600 dark:text-neutral-300 sm:text-[13px]">
-                  Social Platform
+                  {t("about.socialTag")}
                 </span>
                 <span className="about-chip rounded-full border border-neutral-200 dark:border-neutral-700/60 bg-white dark:bg-[#222222] px-3 py-1 font-[Bebas_Neue] text-[12px] uppercase tracking-wide text-neutral-600 dark:text-neutral-300 sm:text-[13px]">
                   REST APIs
@@ -240,24 +227,21 @@ export default function AboutSection() {
                   strokeWidth={2}
                 />
                 <h3 className="font-[Bebas_Neue] text-lg uppercase tracking-wide text-[#111111] dark:text-[#F5F5F5]">
-                  Continuous Learning
+                  {t("about.growth")}
                 </h3>
               </div>
               <p className="mt-3 text-[14px] leading-relaxed text-neutral-600 dark:text-neutral-400 sm:text-[15px]">
-                I&apos;m continuously improving my skills and exploring backend
-                development, software engineering, and cybersecurity to broaden
-                my understanding of how complete digital products are designed
-                and built.
+                {t("about.growthText")}
               </p>
               <div className="mt-4 flex flex-wrap gap-2">
                 <span className="about-chip rounded-full border border-neutral-200 dark:border-neutral-700/60 bg-white dark:bg-[#222222] px-3 py-1 font-[Bebas_Neue] text-[12px] uppercase tracking-wide text-neutral-600 dark:text-neutral-300 sm:text-[13px]">
-                  Backend Development
+                  {t("about.backend")}
                 </span>
                 <span className="about-chip rounded-full border border-neutral-200 dark:border-neutral-700/60 bg-white dark:bg-[#222222] px-3 py-1 font-[Bebas_Neue] text-[12px] uppercase tracking-wide text-neutral-600 dark:text-neutral-300 sm:text-[13px]">
-                  Software Engineering
+                  {t("about.engineering")}
                 </span>
                 <span className="about-chip rounded-full border border-neutral-200 dark:border-neutral-700/60 bg-white dark:bg-[#222222] px-3 py-1 font-[Bebas_Neue] text-[12px] uppercase tracking-wide text-neutral-600 dark:text-neutral-300 sm:text-[13px]">
-                  Cybersecurity
+                  {t("about.security")}
                 </span>
               </div>
             </div>

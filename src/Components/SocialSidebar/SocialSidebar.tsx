@@ -9,6 +9,7 @@ import {
 } from "react-icons/fa";
 import { Phone, X } from "lucide-react";
 import { Link } from "react-router";
+import { useTranslation } from "react-i18next";
 
 const socialLinks = [
   {
@@ -43,12 +44,13 @@ const socialLinkClass =
   "group relative grid size-[40px] shrink-0 place-items-center rounded-full border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#161616] text-neutral-600 dark:text-neutral-400 transition-colors duration-350 ease-out hover:border-[#111111] hover:bg-[#111111] hover:text-white dark:hover:border-white dark:hover:bg-white dark:hover:text-[#111111] focus-visible:border-[#111111] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111111] dark:focus-visible:outline-white motion-reduce:transition-none";
 
 export default function SocialSidebar() {
+  const { t } = useTranslation();
   return (
     <aside
-      aria-label="Social links"
+      aria-label={t("social.links")}
       className="w-full hidden lg:block shrink-0 py-6 lg:w-[100px] lg:py-0">
       <nav
-        aria-label="Social media"
+        aria-label={t("social.media")}
         className="mx-auto flex max-w-[240px] flex-wrap items-center justify-center gap-1 sm:max-w-none sm:flex-nowrap lg:flex-col lg:gap-2">
         <span
           aria-hidden="true"
@@ -65,7 +67,7 @@ export default function SocialSidebar() {
             <Icon aria-hidden="true" className="size-4.5" strokeWidth={2} />
             <span
               aria-hidden="true"
-              className="pointer-events-none absolute left-full top-1/2 z-50 ml-3 -translate-x-1 -translate-y-1/2 whitespace-nowrap rounded-full border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#181818] px-3 py-1.5 font-geist-mono text-xs font-medium text-[#111111] dark:text-[#F5F5F5] opacity-0 shadow-[0_6px_18px_rgba(0,0,0,0.12)] dark:shadow-[0_6px_18px_rgba(0,0,0,0.4)] transition-[opacity,transform] duration-200 ease-out group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100 motion-reduce:transition-none">
+              className="pointer-events-none absolute start-full top-1/2 z-50 ms-3 -translate-x-1 rtl:translate-x-1 -translate-y-1/2 whitespace-nowrap rounded-full border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#181818] px-3 py-1.5 font-geist-mono text-xs font-medium text-[#111111] dark:text-[#F5F5F5] opacity-0 shadow-[0_6px_18px_rgba(0,0,0,0.12)] dark:shadow-[0_6px_18px_rgba(0,0,0,0.4)] transition-[opacity,transform] duration-200 ease-out group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100 motion-reduce:transition-none">
               {label}
             </span>
           </Link>
@@ -80,6 +82,7 @@ export default function SocialSidebar() {
 }
 
 export function MobileSocialMenu() {
+  const { t, i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [position, setPosition] = useState<{ x: number; y: number } | null>(null);
@@ -88,7 +91,9 @@ export function MobileSocialMenu() {
   useEffect(() => {
     try {
       localStorage.removeItem("mobile_social_icon_position");
-    } catch {}
+    } catch {
+      // The menu remains usable when browser storage is unavailable.
+    }
   }, []);
 
   const menuRef = useRef<HTMLDivElement>(null);
@@ -228,7 +233,7 @@ export function MobileSocialMenu() {
   };
 
   const opensDownward = position ? position.y < 340 : false;
-  const opensToRight = position ? position.x < 70 : false;
+  const opensToRight = position ? position.x < 70 : i18n.dir() === "rtl";
 
   return (
     <div
@@ -244,11 +249,11 @@ export function MobileSocialMenu() {
       className={
         position
           ? "fixed z-[60] lg:hidden"
-          : "fixed bottom-[calc(max(1rem,env(safe-area-inset-bottom))+4rem)] md:bottom-[max(1.25rem,env(safe-area-inset-bottom))] right-[max(1rem,env(safe-area-inset-right))] z-[60] lg:hidden"
+          : "fixed bottom-[calc(max(1rem,env(safe-area-inset-bottom))+4rem)] md:bottom-[max(1.25rem,env(safe-area-inset-bottom))] right-[max(1rem,env(safe-area-inset-right))] rtl:left-[max(1rem,env(safe-area-inset-left))] rtl:right-auto z-[60] lg:hidden"
       }>
       <nav
         id="mobile-social-menu"
-        aria-label="Social media"
+        aria-label={t("social.media")}
         aria-hidden={!isOpen}
         className={`absolute ${opensDownward ? "top-full mt-3" : "bottom-full mb-3"} ${
           opensToRight ? "left-0" : "right-0"
@@ -289,7 +294,7 @@ export function MobileSocialMenu() {
       <button
         ref={buttonRef}
         type="button"
-        aria-label={isOpen ? "Close social links" : "Open social links"}
+        aria-label={isOpen ? t("social.close") : t("social.open")}
         aria-expanded={isOpen}
         aria-controls="mobile-social-menu"
         onClick={handleClick}

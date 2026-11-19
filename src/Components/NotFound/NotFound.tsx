@@ -1,7 +1,9 @@
 import { ArrowLeft, Home } from "lucide-react";
 import { Link } from "react-router";
+import { useTranslation } from "react-i18next";
 
 export default function NotFound() {
+  const { t } = useTranslation();
   return (
     <section
       aria-labelledby="not-found-title"
@@ -17,7 +19,7 @@ export default function NotFound() {
 
       <p className="inline-flex items-center gap-2 rounded-full border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#161616] px-4 py-2 font-[Bebas_Neue] text-sm uppercase tracking-[0.16em] text-neutral-500 dark:text-neutral-400 shadow-sm">
         <span aria-hidden="true" className="size-1.5 rounded-full bg-[#111111] dark:bg-white" />
-        Error 404 · Page not found
+        {t("notFound.badge")}
       </p>
 
       <h1
@@ -27,19 +29,18 @@ export default function NotFound() {
       </h1>
 
       <h2 className="mt-7 max-w-[18ch] font-[Bebas_Neue] text-[clamp(1.65rem,4vw,2.75rem)] uppercase leading-[0.98] text-[#111111] dark:text-[#F5F5F5]">
-        Oops! This page got lost in space.
+        {t("notFound.title")}
       </h2>
       <p className="mt-3 max-w-[34rem] text-[13px] leading-6 text-neutral-500 dark:text-neutral-400 sm:text-base sm:leading-7">
-        The page you’re looking for may have moved, been removed, or never
-        existed. Let’s get you back to something familiar.
+        {t("notFound.body")}
       </p>
 
       <Link
         to="/"
         className="mt-6 inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[#111111] dark:bg-white px-5 py-2.5 text-sm font-semibold text-white dark:text-[#111111] shadow-[0_8px_24px_rgba(17,17,17,0.14)] dark:shadow-[0_8px_24px_rgba(0,0,0,0.4)] transition-[transform,background-color,box-shadow] duration-200 hover:-translate-y-0.5 hover:bg-neutral-800 dark:hover:bg-neutral-200 hover:shadow-[0_12px_30px_rgba(17,17,17,0.2)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#111111] dark:focus-visible:outline-white active:translate-y-0 motion-reduce:transition-none sm:mt-7 sm:min-h-12 sm:gap-2.5 sm:px-6 sm:py-3 sm:text-[15px]">
         <Home aria-hidden="true" className="size-4 sm:size-[18px]" />
-        Back to Home
-        <ArrowLeft aria-hidden="true" className="size-4 rotate-180" />
+        {t("notFound.home")}
+        <ArrowLeft aria-hidden="true" className="size-4 rotate-180 rtl:rotate-0" />
       </Link>
     </section>
   );

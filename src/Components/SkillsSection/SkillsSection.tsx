@@ -26,6 +26,7 @@ import {
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useTheme } from "../../context/ThemeContext";
+import { useTranslation } from "react-i18next";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -58,6 +59,7 @@ const skills: { name: string; Icon: IconType }[] = [
 
 export default function SkillsSection() {
   const { isDark } = useTheme();
+  const { t, i18n } = useTranslation();
   const sectionRef = useRef<HTMLElement>(null);
   const headingWordsRef = useRef<HTMLHeadingElement>(null);
   const marqueeRef = useRef<HTMLDivElement>(null);
@@ -127,15 +129,16 @@ export default function SkillsSection() {
         className="font-[Bebas_Neue] text-[29px] uppercase leading-none text-[#111111] dark:text-[#F5F5F5] sm:text-[36px]"
       >
         <span className="inline-block overflow-hidden py-1">
-          <span className="skills-heading-word inline-block">Skills</span>
+          <span className="skills-heading-word inline-block">{t("skills.title")}</span>
         </span>
       </h2>
 
       <div ref={marqueeRef} className="relative mt-8 sm:mt-10">
         <Marquee
-          aria-label="Technical skills"
+          aria-label={t("skills.label")}
           pauseOnHover
           speed={55}
+          direction={i18n.resolvedLanguage === "ar" ? "right" : "left"}
           gradient
           gradientColor={isDark ? "#0A0A0A" : "#fafafa"}
           gradientWidth={56}

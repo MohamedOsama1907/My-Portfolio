@@ -5,10 +5,12 @@ import ProjectModal from "../ProjectModal/ProjectModal";
 import type { ProjectItem } from "../../data/projectsData";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useTranslation } from "react-i18next";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function FeaturedProjectsSection() {
+  const { t } = useTranslation();
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [modalProject, setModalProject] = useState<ProjectItem | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
@@ -80,10 +82,9 @@ export default function FeaturedProjectsSection() {
         className="font-[Bebas_Neue] text-[29px] uppercase leading-none text-[#111111] dark:text-[#F5F5F5] sm:text-[36px]"
       >
         <span className="inline-block overflow-hidden py-1">
-          <span className="fp-heading-word inline-block">Featured</span>
+          <span className="fp-heading-word inline-block">{t("featured.title")}</span>
         </span>{" "}
         <span className="inline-block overflow-hidden py-1">
-          <span className="fp-heading-word inline-block">Projects</span>
         </span>
       </h2>
       <div ref={carouselWrapRef} className="mt-10 sm:mt-14">

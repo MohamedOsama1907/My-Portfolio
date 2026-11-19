@@ -9,6 +9,7 @@ import {
 import { Link } from "react-router";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useTranslation } from "react-i18next";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -36,6 +37,7 @@ const contactLinkClass =
   "inline-flex items-center justify-center gap-2 rounded-2xl border border-neutral-200 bg-white px-3 py-2.5 text-xs leading-none text-[#111111] transition-colors duration-200 hover:border-[#111111] hover:bg-[#111111] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111111] motion-reduce:transition-none sm:gap-2.5 sm:px-4 sm:py-3 sm:text-[15px] dark:border-neutral-800 dark:bg-[#161616] dark:text-[#F5F5F5] dark:hover:border-white dark:hover:bg-white dark:hover:text-[#111111] dark:focus-visible:outline-white";
 
 export default function WorkSection() {
+  const { t } = useTranslation();
   const sectionRef = useRef<HTMLElement>(null);
   const headingWordsRef = useRef<HTMLHeadingElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -124,23 +126,23 @@ export default function WorkSection() {
         id="work-section-title"
         className="font-[Bebas_Neue] text-[29px] uppercase leading-none text-[#111111] dark:text-[#F5F5F5] sm:text-[36px]">
         <span className="inline-block overflow-hidden py-1">
-          <span className="work-heading-word inline-block">Let&apos;s</span>
+          <span className="work-heading-word inline-block">{t("work.first")}</span>
         </span>{" "}
         <span className="inline-block overflow-hidden py-1">
-          <span className="work-heading-word inline-block">work</span>
+          <span className="work-heading-word inline-block">{t("work.second")}</span>
         </span>{" "}
         <span className="inline-block overflow-hidden py-1">
-          <span className="work-heading-word inline-block">together</span>
+          <span className="work-heading-word inline-block">{t("work.third")}</span>
         </span>
       </h2>
 
       <div ref={contentRef}>
         <p className="work-reveal mt-6 text-[14px] text-neutral-500 dark:text-neutral-400 sm:mt-9 sm:text-lg">
-          Available for freelance projects and collaborations
+          {t("hero.availability")}
         </p>
 
         <nav
-          aria-label="Contact and social links"
+          aria-label={t("work.links")}
           className="mx-auto mt-5 grid w-fit grid-cols-3 justify-center gap-2 sm:mt-6 sm:flex sm:w-auto sm:flex-wrap sm:gap-2.5">
           {contactLinks.map(({ label, href, Icon }) => (
             <a
@@ -150,7 +152,7 @@ export default function WorkSection() {
               rel="noreferrer"
               className={`work-chip ${contactLinkClass}`}>
               <Icon aria-hidden="true" className="size-[18px] shrink-0" />
-              <span>{label}</span>
+              <span>{label === "Email" ? t("work.email") : label}</span>
             </a>
           ))}
           <a
@@ -158,7 +160,7 @@ export default function WorkSection() {
             download="Mohamed_Osama_CV.pdf"
             className={`work-chip ${contactLinkClass}`}>
             <ArrowDown aria-hidden="true" className="size-[18px] shrink-0" />
-            <span>CV</span>
+            <span>{t("work.cv")}</span>
           </a>
         </nav>
 
@@ -166,7 +168,7 @@ export default function WorkSection() {
           <Link
             to="/Contact"
             className="mt-7 inline-flex items-center justify-center rounded-full bg-[#111111] dark:bg-white px-6 py-3 text-[15px] font-semibold text-white dark:text-[#111111] transition-colors duration-200 hover:bg-neutral-800 dark:hover:bg-neutral-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111111] dark:focus-visible:outline-white motion-reduce:transition-none sm:mt-8">
-            Send a message
+            {t("contact.send")}
           </Link>
         </div>
       </div>
