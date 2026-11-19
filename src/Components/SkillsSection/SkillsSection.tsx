@@ -134,29 +134,30 @@ export default function SkillsSection() {
       </h2>
 
       <div ref={marqueeRef} className="relative mt-8 sm:mt-10">
-        <Marquee
-          aria-label={t("skills.label")}
-          pauseOnHover
-          speed={55}
-          direction={i18n.resolvedLanguage === "ar" ? "right" : "left"}
-          gradient
-          gradientColor={isDark ? "#0A0A0A" : "#fafafa"}
-          gradientWidth={56}
-          className=""
-        >
-          {skills.map(({ name, Icon }) => (
-            <div
-              key={name}
-              className="mx-1.5 flex w-max items-center gap-3 rounded-[12px] border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#161616] py-3 px-4 lg:px-5 text-[15px] font-semibold leading-none text-[#111111] dark:text-[#F5F5F5] transition-colors duration-200 hover:border-neutral-300 dark:hover:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-[#202020] sm:px-6"
-            >
-              <Icon
-                aria-hidden="true"
-                className=" size-[15px] lg:size-[19px] shrink-0"
-              />
-              <span className="whitespace-nowrap">{name}</span>
-            </div>
-          ))}
-        </Marquee>
+        <div dir="ltr">
+          <Marquee
+            aria-label={t("skills.label")}
+            pauseOnHover
+            speed={55}
+            direction={i18n.resolvedLanguage === "ar" ? "right" : "left"}
+            gradient
+            gradientColor={isDark ? "#0A0A0A" : "#fafafa"}
+            gradientWidth={56}
+          >
+            {skills.map(({ name, Icon }) => (
+              <div
+                key={name}
+                className="mx-1.5 flex w-max items-center gap-3 rounded-[12px] border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-[#161616] py-3 px-4 lg:px-5 text-[15px] font-semibold leading-none text-[#111111] dark:text-[#F5F5F5] transition-colors duration-200 hover:border-neutral-300 dark:hover:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-[#202020] sm:px-6"
+              >
+                <Icon
+                  aria-hidden="true"
+                  className=" size-[15px] lg:size-[19px] shrink-0"
+                />
+                <span className="whitespace-nowrap">{name}</span>
+              </div>
+            ))}
+          </Marquee>
+        </div>
       </div>
     </section>
   );
