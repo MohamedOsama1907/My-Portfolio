@@ -302,12 +302,10 @@ export default function Navbar() {
                 key={link.label}
                 to={link.href}
                 onClick={() => {
-                  if (link.label === "Home") {
-                    window.scrollTo({
-                      top: 0,
-                      behavior: "smooth",
-                    });
-                  }
+                  window.scrollTo({
+                    top: 0,
+                    behavior: "smooth",
+                  });
                 }}
                 className={({ isActive }) =>
                   `group relative isolate flex items-center justify-center whitespace-nowrap rounded-full bg-white dark:bg-[#1e1e1e] px-5 py-2.5 font-geist-mono text-sm font-bold uppercase leading-none tracking-wide transition-colors duration-200 ease-out [@media(hover:hover)]:hover:text-[#FAFAFA] dark:[@media(hover:hover)]:hover:text-[#111111] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#111111] dark:focus-visible:outline-white lg:text-lg ${
@@ -415,6 +413,12 @@ export default function Navbar() {
               to={href}
               aria-label={translateLink(label)}
               data-dock-item
+              onClick={() => {
+                window.scrollTo({
+                  top: 0,
+                  behavior: "smooth",
+                });
+              }}
               className={({ isActive }) =>
                 isActive ? activeItemClass : itemClass
               }>

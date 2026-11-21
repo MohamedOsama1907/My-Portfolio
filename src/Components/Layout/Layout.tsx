@@ -1,4 +1,4 @@
-import { Outlet } from "react-router";
+import { Outlet, ScrollRestoration } from "react-router";
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/Footer";
 import SocialSidebar, { MobileSocialMenu } from "../SocialSidebar/SocialSidebar";
@@ -6,6 +6,7 @@ import SocialSidebar, { MobileSocialMenu } from "../SocialSidebar/SocialSidebar"
 export default function Layout() {
   return (
     <>
+      <ScrollRestoration />
       <Navbar />
       <div className="mx-auto flex min-h-[calc(100svh-7rem)] w-full max-w-[1920px] flex-col lg:flex-row lg:items-center mt-6 lg:mt-18">
         <div className="fixed start-0 top-1/2 z-40 hidden -translate-y-1/2 lg:block">
