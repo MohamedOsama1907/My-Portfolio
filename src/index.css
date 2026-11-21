@@ -32,28 +32,78 @@ body {
   transition: background-color 0.25s ease, color 0.25s ease;
 }
 
+/* Arabic Typography (Applied exclusively to html[lang="ar"]) */
+html[lang="ar"] {
+  font-family: "IBM Plex Sans Arabic", sans-serif;
+}
+
 html[lang="ar"] body {
-  font-family: Tahoma, Arial, sans-serif;
+  font-family: "IBM Plex Sans Arabic", sans-serif;
+  font-weight: 400;
   line-height: 1.75;
 }
 
+/* Headings and subheadings (H1, H2, H3, H4) use Alexandria with weights 700–800 */
 html[lang="ar"] h1,
 html[lang="ar"] h2,
 html[lang="ar"] h3,
 html[lang="ar"] h4,
 html[lang="ar"] h5,
-html[lang="ar"] h6 {
-  font-family: Tahoma, Arial, sans-serif;
-  letter-spacing: 0;
+html[lang="ar"] h6,
+html[lang="ar"] [role="heading"],
+html[lang="ar"] .about-reveal p.font-\[Bebas_Neue\],
+html[lang="ar"] .edu-reveal p.font-\[Bebas_Neue\] {
+  font-family: "Alexandria Variable", "Alexandria", sans-serif !important;
+  letter-spacing: 0 !important;
   line-height: 1.35;
 }
 
-html[lang="ar"] .font-geist-mono {
-  font-family: Tahoma, Arial, sans-serif;
+html[lang="ar"] h1 {
+  font-weight: 800 !important;
+}
+
+html[lang="ar"] h2 {
+  font-weight: 800 !important;
+}
+
+html[lang="ar"] h3,
+html[lang="ar"] h4,
+html[lang="ar"] h5,
+html[lang="ar"] h6,
+html[lang="ar"] [role="heading"],
+html[lang="ar"] .about-reveal p.font-\[Bebas_Neue\],
+html[lang="ar"] .edu-reveal p.font-\[Bebas_Neue\] {
+  font-weight: 700 !important;
+}
+
+/* Ensure nested elements inside headings inherit Alexandria and font-weight */
+html[lang="ar"] :is(h1, h2, h3, h4, h5, h6, [role="heading"]) :where(span, div, a) {
+  font-family: inherit !important;
+  font-weight: inherit !important;
+  letter-spacing: inherit !important;
+}
+
+/* Body text, paragraphs, navigation, buttons, and other UI elements use IBM Plex Sans Arabic (400–500) */
+html[lang="ar"] p,
+html[lang="ar"] li,
+html[lang="ar"] a,
+html[lang="ar"] button,
+html[lang="ar"] input,
+html[lang="ar"] textarea,
+html[lang="ar"] label,
+html[lang="ar"] select,
+html[lang="ar"] .font-geist-mono,
+html[lang="ar"] [class*="font-[Bebas"]:not(h1, h2, h3, h4, h5, h6, [role="heading"], .about-reveal p.font-\[Bebas_Neue\], .edu-reveal p.font-\[Bebas_Neue\], h1 *, h2 *, h3 *, h4 *, h5 *, h6 *) {
+  font-family: "IBM Plex Sans Arabic", sans-serif !important;
   letter-spacing: 0;
 }
 
-html[lang="ar"] :where(button, a, label) {
+html[lang="ar"] :where(body, p, li, input, textarea) {
+  font-weight: 400;
+}
+
+html[lang="ar"] :where(button, a, label, nav, [role="button"], .font-geist-mono, [class*="chip"], [class*="badge"]) {
+  font-weight: 500;
   line-height: 1.5;
 }
 
