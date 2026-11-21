@@ -16,17 +16,6 @@ function DocumentLanguage() {
     const isArabic = i18n.resolvedLanguage === "ar";
     document.documentElement.lang = isArabic ? "ar" : "en";
     document.documentElement.dir = isArabic ? "rtl" : "ltr";
-    document.title = isArabic
-      ? "محمد أسامة | مطور واجهات أمامية"
-      : "Mohamed Osama | Frontend Developer";
-    const description = document.querySelector<HTMLMetaElement>(
-      'meta[name="description"]',
-    );
-    if (description) {
-      description.content = isArabic
-        ? "معرض أعمال محمد أسامة: مشاريع تطوير واجهات ومهارات وخبرات وطرق للتواصل."
-        : "Mohamed Osama's frontend development portfolio, projects, skills, experience, and contact information.";
-    }
   }, [i18n.resolvedLanguage]);
 
   return null;
@@ -46,7 +35,15 @@ const router = createBrowserRouter([
         element: <Contact />,
       },
       {
+        path: "contact",
+        element: <Contact />,
+      },
+      {
         path: "Projects",
+        element: <Projects />,
+      },
+      {
+        path: "projects",
         element: <Projects />,
       },
     ],

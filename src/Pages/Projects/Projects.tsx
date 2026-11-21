@@ -17,6 +17,7 @@ import {
 import ProjectModal from "../../Components/ProjectModal/ProjectModal";
 import { useTranslation } from "react-i18next";
 import { localizeProject } from "../../i18n/localizeProject";
+import SEO from "../../Components/SEO/SEO";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -185,15 +186,23 @@ export default function Projects() {
 
   return (
     <div ref={containerRef} className="w-full py-4 pb-15 sm:py-6">
+      <SEO
+        title={t("seo.projectsTitle")}
+        description={t("seo.projectsDescription")}
+        keywords={t("seo.projectsKeywords")}
+        canonicalPath="/Projects"
+        ogType="website"
+      />
       {/* Header section matching reference design */}
       <header className="max-w-3xl">
-        <h2
+        <h1
           ref={headingRef}
           className="scroll-mt-20 font-[Bebas_Neue] text-[29px] uppercase leading-none text-[#111111] dark:text-[#F5F5F5] sm:text-[48px]">
           <span className="inline-block overflow-hidden py-1">
             <span className="proj-heading-word inline-block">{t("projectsPage.title")}</span>
           </span>
-        </h2>
+          <span className="sr-only"> — Mohamed Osama | Front-End Developer</span>
+        </h1>
         <p className="mt-3 text-sm leading-relaxed text-neutral-500 dark:text-neutral-400 sm:text-base">
           {t("projectsPage.intro")}
         </p>
@@ -286,11 +295,11 @@ export default function Projects() {
               </span>
 
               {/* Project title */}
-              <h2
+              <h3
                 onClick={() => setActiveModalProject(project)}
                 className="mt-1 cursor-pointer font-[Bebas_Neue] text-2xl uppercase tracking-wide text-[#111111] transition-colors hover:text-neutral-600 dark:text-[#F5F5F5] dark:hover:text-neutral-300 sm:text-[26px]">
                 {localized.name}
-              </h2>
+              </h3>
 
               {/* Description */}
               <p className="mt-2 line-clamp-2 flex-1 text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">

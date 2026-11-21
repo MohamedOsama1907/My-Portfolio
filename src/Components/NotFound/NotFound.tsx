@@ -1,6 +1,7 @@
 import { ArrowLeft, Home } from "lucide-react";
 import { Link } from "react-router";
 import { useTranslation } from "react-i18next";
+import SEO from "../SEO/SEO";
 
 export default function NotFound() {
   const { t } = useTranslation();
@@ -8,6 +9,11 @@ export default function NotFound() {
     <section
       aria-labelledby="not-found-title"
       className="relative isolate flex min-h-[min(62svh,36rem)] w-full flex-col items-center justify-center overflow-hidden px-4 py-12 text-center sm:px-6 sm:py-14">
+      <SEO
+        title={t("seo.notFoundTitle")}
+        description={t("seo.notFoundDescription")}
+        noindex={true}
+      />
       <div
         aria-hidden="true"
         className="pointer-events-none absolute left-1/2 top-1/2 -z-10 aspect-square w-[min(76vw,29rem)] -translate-x-1/2 -translate-y-1/2 rounded-full border border-neutral-200/80 dark:border-neutral-800/80"

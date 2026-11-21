@@ -196,7 +196,8 @@ function HeroSectionContent() {
             ref={h1Ref}
             id="hero-title"
             className="font-[Bebas_Neue] text-[35px] uppercase leading-[0.95] text-[#111111] dark:text-[#F5F5F5] sm:text-[clamp(2.75rem,5vw,4.25rem)] mt-6">
-            <span className="inline-block overflow-hidden py-1">
+            <span className="sr-only">{t("hero.seoTitle")}</span>
+            <span aria-hidden="true" className="inline-block overflow-hidden py-1">
               <span className="hero-word inline-block">{t("hero.name")}</span>
             </span>
           </h1>

@@ -13,6 +13,7 @@ import z from "zod";
 import { toast } from "sonner";
 import emailjs from "@emailjs/browser";
 import { useTranslation } from "react-i18next";
+import SEO from "../../Components/SEO/SEO";
 const contactCards = [
   {
     label: "Email",
@@ -112,12 +113,20 @@ export default function Contact() {
     <section
       aria-labelledby="contact-title"
       className="w-full py-4 pb-15 sm:py-6">
+      <SEO
+        title={t("seo.contactTitle")}
+        description={t("seo.contactDescription")}
+        keywords={t("seo.contactKeywords")}
+        canonicalPath="/Contact"
+        ogType="website"
+      />
       {/* Section heading */}
-      <h2
+      <h1
         id="contact-title"
         className="font-[Bebas_Neue] text-[29px] uppercase leading-none text-[#111111] dark:text-[#F5F5F5] sm:text-[48px]">
-        {t("contact.title")}
-      </h2>
+        <span>{t("contact.title")}</span>
+        <span className="sr-only"> — Mohamed Osama | Front-End Developer</span>
+      </h1>
       <p className="mt-4 max-w-2xl text-sm leading-6 text-neutral-500 dark:text-neutral-400 sm:mt-5 sm:text-base sm:leading-7">
         {t("contact.intro")}
       </p>
